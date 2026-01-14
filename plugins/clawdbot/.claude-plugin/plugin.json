@@ -1,0 +1,23 @@
+{
+  "name": "clawdbot",
+  "version": "1.0.0",
+  "description": "Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams)",
+  "author": {
+    "name": "zot24",
+    "email": "hi@zot24.com"
+  },
+  "commands": [
+    {
+      "name": "clawdbot",
+      "description": "Clawdbot expert - setup, channels, troubleshooting",
+      "source": "./commands/clawdbot.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "clawdbot",
+      "description": "Comprehensive Clawdbot knowledge base",
+      "source": "./skills/clawdbot/SKILL.md"
+    }
+  ]
+}

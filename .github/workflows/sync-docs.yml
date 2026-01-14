@@ -18,6 +18,7 @@ on:
           - all
           - umbrel-app
           - claude-code-expert
+          - clawdbot
       force:
         description: 'Force sync even if no changes detected'
         required: false
@@ -44,7 +45,7 @@ jobs:
         id: set-plugins
         run: |
           if [ "${{ inputs.plugin }}" = "all" ] || [ -z "${{ inputs.plugin }}" ]; then
-            echo 'plugins=["umbrel-app", "claude-code-expert"]' >> $GITHUB_OUTPUT
+            echo 'plugins=["umbrel-app", "claude-code-expert", "clawdbot"]' >> $GITHUB_OUTPUT
           else
             echo 'plugins=["${{ inputs.plugin }}"]' >> $GITHUB_OUTPUT
           fi
@@ -137,6 +138,8 @@ jobs:
           # Determine source info based on plugin
           if [ "${{ matrix.plugin }}" = "umbrel-app" ]; then
             SOURCE_INFO="- **Source**: https://github.com/getumbrel/umbrel-apps/blob/master/README.md"
+          elif [ "${{ matrix.plugin }}" = "clawdbot" ]; then
+            SOURCE_INFO="- **Source**: https://docs.clawd.bot/"
           else
             SOURCE_INFO="- **Sources**: See \`plugins/${{ matrix.plugin }}/sources/registry.json\`"
           fi

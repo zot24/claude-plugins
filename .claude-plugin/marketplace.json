@@ -17,6 +17,12 @@
       "source": "./plugins/claude-code-expert",
       "description": "Comprehensive Claude Code and Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, and MCP.",
       "version": "1.0.0"
+    },
+    {
+      "name": "clawdbot",
+      "source": "./plugins/clawdbot",
+      "description": "Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams)",
+      "version": "1.0.0"
     }
   ]
 }
