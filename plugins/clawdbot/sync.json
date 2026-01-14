@@ -1,0 +1,62 @@
+{
+  "name": "clawdbot",
+  "version": "1.0.0",
+  "description": "Clawdbot AI assistant framework expert",
+  "sources": [
+    {
+      "url": "https://docs.clawd.bot/start/getting-started",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "installation",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/concepts/architecture",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "architecture",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/cli/gateway",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "gateway",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/channels/whatsapp",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "whatsapp",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/channels/telegram",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "telegram",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/channels/discord",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "discord",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/channels/slack",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "slack",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/concepts/memory",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "memory",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://docs.clawd.bot/tools/skills",
+      "target": "skills/clawdbot/SKILL.md",
+      "section": "skills",
+      "freshness_days": 14
+    }
+  ],
+  "cache_dir": ".cache"
+}

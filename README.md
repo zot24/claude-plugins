@@ -8,6 +8,7 @@ A collection of Claude Code plugins for various development workflows.
 |--------|-------------|
 | [umbrel-app](./plugins/umbrel-app) | Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS |
 | [claude-code-expert](./plugins/claude-code-expert) | Comprehensive Claude Code & Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, MCP. |
+| [clawdbot](./plugins/clawdbot) | Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams) |
 
 ## Installation
 
@@ -64,6 +65,13 @@ Format: `/plugin-name:command-name [arguments]`
 /claude-code-expert:claude create skill   # Guide for creating skills
 /claude-code-expert:claude validate ./x   # Validate against best practices
 /claude-code-expert:claude features       # Show Claude Code capabilities
+
+# Clawdbot AI assistant framework
+/clawdbot:clawdbot setup                  # Installation guide
+/clawdbot:clawdbot channel whatsapp       # Configure WhatsApp
+/clawdbot:clawdbot channel telegram       # Configure Telegram
+/clawdbot:clawdbot diagnose               # Troubleshoot issues
+/clawdbot:clawdbot gateway                # Gateway configuration
 ```
 
 ### Natural Language
@@ -75,6 +83,8 @@ You can also just describe what you want:
 "Help me package this for umbrelOS"
 "How do I create a Claude Code agent?"
 "What are the best practices for hooks?"
+"How do I set up WhatsApp with Clawdbot?"
+"My Telegram bot isn't receiving messages"
 ```
 
 The plugins auto-activate based on context.
@@ -135,6 +145,26 @@ Comprehensive Claude Code and Anthropic ecosystem knowledge:
 
 [Full documentation](./plugins/claude-code-expert/README.md)
 
+### clawdbot
+
+Expert on Clawdbot AI assistant framework:
+
+- **setup** - Installation and configuration guide
+- **channel** - Configure messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams)
+- **diagnose** - Troubleshoot common issues
+- **gateway** - Gateway configuration and remote access
+- **skills** - Create and manage Clawdbot skills
+- **memory** - Memory system configuration
+- **sync/diff** - Stay updated with upstream docs
+
+```bash
+/clawdbot:clawdbot setup
+/clawdbot:clawdbot channel whatsapp
+/clawdbot:clawdbot diagnose
+```
+
+[Full documentation](./plugins/clawdbot/README.md)
+
 ## Adding New Plugins
 
 1. Create a new directory under `plugins/`:
@@ -189,7 +219,7 @@ Runs bi-weekly (1st and 15th of each month) to check for upstream documentation 
 **Manual trigger**: Actions > Sync Plugin Documentation > Run workflow
 
 Options:
-- `plugin`: all, umbrel-app, or claude-code-expert
+- `plugin`: all, umbrel-app, claude-code-expert, or clawdbot
 - `force`: Force sync even without detected changes
 - `dry_run`: Check for changes without creating PR
 
@@ -223,7 +253,10 @@ claude-plugins/
 │   ├── umbrel-app/               # Umbrel app development
 │   │   ├── sync.json
 │   │   └── ...
-│   └── claude-code-expert/       # Claude Code knowledge base
+│   ├── claude-code-expert/       # Claude Code knowledge base
+│   │   ├── sync.json
+│   │   └── ...
+│   └── clawdbot/                 # Clawdbot AI assistant framework
 │       ├── sync.json
 │       └── ...
 └── README.md
