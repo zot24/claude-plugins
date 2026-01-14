@@ -43,6 +43,59 @@ Add to your project's `.claude/settings.json`:
 }
 ```
 
+## Usage
+
+Once installed, you can use plugins via **slash commands** or **natural language**.
+
+### Slash Commands
+
+Format: `/plugin-name:command-name [arguments]`
+
+```bash
+# Umbrel app development
+/umbrel-app:umbrel scaffold my-app        # Create new app structure
+/umbrel-app:umbrel validate ./my-app      # Validate app configuration
+/umbrel-app:umbrel convert ./docker-app   # Convert Docker Compose to Umbrel
+/umbrel-app:umbrel pr ./my-app            # Generate PR submission
+/umbrel-app:umbrel debug ./my-app         # Troubleshoot issues
+
+# Claude Code expertise
+/claude-code-expert:claude create agent   # Guide for creating agents
+/claude-code-expert:claude create skill   # Guide for creating skills
+/claude-code-expert:claude validate ./x   # Validate against best practices
+/claude-code-expert:claude features       # Show Claude Code capabilities
+```
+
+### Natural Language
+
+You can also just describe what you want:
+
+```
+"Create an Umbrel app for my Docker project"
+"Help me package this for umbrelOS"
+"How do I create a Claude Code agent?"
+"What are the best practices for hooks?"
+```
+
+The plugins auto-activate based on context.
+
+### Quick Start Examples
+
+**Create a new Umbrel app:**
+```
+> /umbrel-app:umbrel scaffold my-bitcoin-dashboard
+```
+
+**Validate before submitting:**
+```
+> /umbrel-app:umbrel validate ./my-bitcoin-dashboard
+```
+
+**Learn Claude Code patterns:**
+```
+> /claude-code-expert:claude create hook
+```
+
 ## Plugin Details
 
 ### umbrel-app
