@@ -1,0 +1,16 @@
+{
+  "name": "claude-plugins",
+  "description": "A collection of Claude Code plugins for various development workflows",
+  "owner": {
+    "name": "Your Name",
+    "email": "your@email.com"
+  },
+  "plugins": [
+    {
+      "name": "umbrel-app",
+      "source": "./plugins/umbrel-app",
+      "description": "Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS",
+      "version": "1.0.0"
+    }
+  ]
+}
