@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   release:
-    # Only run for merged PRs with 'automated' label
+    # Only run for merged PRs with 'automated' label (sync PRs)
     if: |
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'automated')
@@ -22,150 +22,40 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect updated plugin
-        id: detect
+      - name: Create release tag
+        id: tag
         run: |
-          # Get the list of changed files in the merged PR
-          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+          DATE=$(date +%Y%m%d)
+          TAG_NAME="sync-$DATE"
 
-          # Detect which plugin was updated
-          PLUGIN=""
-          if echo "$CHANGED_FILES" | grep -q "^plugins/umbrel-app/"; then
-            PLUGIN="umbrel-app"
-          elif echo "$CHANGED_FILES" | grep -q "^plugins/claude-code-expert/"; then
-            PLUGIN="claude-code-expert"
-          fi
+          # Check if tag already exists, add suffix if needed
+          COUNTER=1
+          FINAL_TAG="$TAG_NAME"
+          while git rev-parse "$FINAL_TAG" >/dev/null 2>&1; do
+            FINAL_TAG="${TAG_NAME}-${COUNTER}"
+            COUNTER=$((COUNTER + 1))
+          done
 
-          if [ -z "$PLUGIN" ]; then
-            echo "No plugin detected in changes"
-            echo "skip=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+          echo "tag=$FINAL_TAG" >> $GITHUB_OUTPUT
 
-          echo "plugin=$PLUGIN" >> $GITHUB_OUTPUT
-          echo "skip=false" >> $GITHUB_OUTPUT
-          echo "Detected plugin: $PLUGIN"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get plugin version
-        if: steps.detect.outputs.skip != 'true'
-        id: version
-        run: |
-          PLUGIN="${{ steps.detect.outputs.plugin }}"
-          VERSION=$(jq -r '.version' "plugins/$PLUGIN/sync.json")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Plugin version: $VERSION"
-
-      - name: Check if tag exists
-        if: steps.detect.outputs.skip != 'true'
-        id: check-tag
-        run: |
-          PLUGIN="${{ steps.detect.outputs.plugin }}"
-          VERSION="${{ steps.version.outputs.version }}"
-          TAG_NAME="${PLUGIN}-v${VERSION}"
-
-          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            echo "Tag $TAG_NAME already exists"
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "Tag $TAG_NAME does not exist"
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Bump version
-        if: steps.detect.outputs.skip != 'true' && steps.check-tag.outputs.exists == 'true'
-        id: bump
-        run: |
-          PLUGIN="${{ steps.detect.outputs.plugin }}"
-          MANIFEST="plugins/$PLUGIN/sync.json"
-
-          # Read current version and bump patch
-          CURRENT=$(jq -r '.version' "$MANIFEST")
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
-          PATCH=$((PATCH + 1))
-          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-
-          # Update sync.json
-          jq --arg v "$NEW_VERSION" '.version = $v' "$MANIFEST" > tmp.json
-          mv tmp.json "$MANIFEST"
-
-          # Commit the version bump
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$MANIFEST"
-          git commit -m "chore($PLUGIN): bump version to $NEW_VERSION"
-          git push
+          git tag "$FINAL_TAG"
+          git push origin "$FINAL_TAG"
 
-          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "tag=${PLUGIN}-v${NEW_VERSION}" >> $GITHUB_OUTPUT
-          echo "Bumped version to: $NEW_VERSION"
-
-      - name: Determine final tag
-        if: steps.detect.outputs.skip != 'true'
-        id: final
-        run: |
-          if [ "${{ steps.check-tag.outputs.exists }}" = "true" ]; then
-            echo "tag=${{ steps.bump.outputs.tag }}" >> $GITHUB_OUTPUT
-            echo "version=${{ steps.bump.outputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${{ steps.check-tag.outputs.tag }}" >> $GITHUB_OUTPUT
-            echo "version=${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Git tag
-        if: steps.detect.outputs.skip != 'true'
-        run: |
-          TAG="${{ steps.final.outputs.tag }}"
-          git tag "$TAG"
-          git push origin "$TAG"
-          echo "Created tag: $TAG"
-
-      - name: Generate release notes
-        if: steps.detect.outputs.skip != 'true'
-        id: notes
-        run: |
-          PLUGIN="${{ steps.detect.outputs.plugin }}"
-          VERSION="${{ steps.final.outputs.version }}"
-          PR_BODY=$(gh pr view ${{ github.event.pull_request.number }} --json body --jq '.body')
-          PR_TITLE=$(gh pr view ${{ github.event.pull_request.number }} --json title --jq '.title')
-
-          NOTES=$(cat << EOF
-          ## $PLUGIN v$VERSION
-
-          ### Changes
-
-          $PR_BODY
-
-          ### PR
-
-          - #${{ github.event.pull_request.number }}: $PR_TITLE
-
-          ---
-
-          *Released automatically after merge.*
-          EOF
-          )
-
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$NOTES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Created tag: $FINAL_TAG"
 
       - name: Create GitHub Release
-        if: steps.detect.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PLUGIN="${{ steps.detect.outputs.plugin }}"
-          TAG="${{ steps.final.outputs.tag }}"
-          VERSION="${{ steps.final.outputs.version }}"
+          TAG="${{ steps.tag.outputs.tag }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
 
           gh release create "$TAG" \
-            --title "$PLUGIN v$VERSION" \
-            --notes "${{ steps.notes.outputs.notes }}" \
+            --title "$PR_TITLE" \
+            --notes "$PR_BODY" \
             --latest=false
 
           echo "Created release: $TAG"

@@ -1,24 +1,11 @@
 name: Sync Plugin Documentation
 
 on:
-  # Scheduled run - bi-weekly by default
-  # Override with repository variable SYNC_SCHEDULE
   schedule:
     - cron: '0 6 1,15 * *'  # 1st and 15th of each month at 6 AM UTC
 
-  # Manual trigger with options
   workflow_dispatch:
     inputs:
-      plugin:
-        description: 'Plugin to sync'
-        required: true
-        default: 'all'
-        type: choice
-        options:
-          - all
-          - umbrel-app
-          - claude-code-expert
-          - clawdbot
       force:
         description: 'Force sync even if no changes detected'
         required: false
@@ -35,29 +22,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  # Determine which plugins to sync
-  setup:
+  sync-all:
     runs-on: ubuntu-latest
-    outputs:
-      plugins: ${{ steps.set-plugins.outputs.plugins }}
-    steps:
-      - name: Set plugins to sync
-        id: set-plugins
-        run: |
-          if [ "${{ inputs.plugin }}" = "all" ] || [ -z "${{ inputs.plugin }}" ]; then
-            echo 'plugins=["umbrel-app", "claude-code-expert", "clawdbot"]' >> $GITHUB_OUTPUT
-          else
-            echo 'plugins=["${{ inputs.plugin }}"]' >> $GITHUB_OUTPUT
-          fi
-
-  # Sync each plugin
-  sync:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        plugin: ${{ fromJson(needs.setup.outputs.plugins) }}
 
     steps:
       - name: Checkout repository
@@ -76,54 +42,103 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Run sync for ${{ matrix.plugin }}
+      - name: Sync all plugins
         id: sync
         env:
-          PLUGIN_NAME: ${{ matrix.plugin }}
           FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
           DRY_RUN_FLAG: ${{ inputs.dry_run == true && '--dry-run' || '' }}
         run: |
           chmod +x .github/scripts/sync-plugin.sh
 
-          # Capture output
-          OUTPUT=$(.github/scripts/sync-plugin.sh "plugins/$PLUGIN_NAME" $FORCE_FLAG $DRY_RUN_FLAG 2>&1) || true
-          echo "$OUTPUT"
+          PLUGINS=("umbrel-app" "claude-code-expert" "clawdbot")
+          CHANGED_PLUGINS=""
+          ALL_CHANGES=""
 
-          # Check if changes were made
-          if git diff --quiet; then
+          for PLUGIN in "${PLUGINS[@]}"; do
+            echo "=== Syncing $PLUGIN ==="
+
+            OUTPUT=$(.github/scripts/sync-plugin.sh "plugins/$PLUGIN" $FORCE_FLAG $DRY_RUN_FLAG 2>&1) || true
+            echo "$OUTPUT"
+
+            # Check if this plugin had changes
+            if git diff --quiet "plugins/$PLUGIN/"; then
+              echo "No changes for $PLUGIN"
+            else
+              echo "Changes detected for $PLUGIN"
+              CHANGED_PLUGINS="$CHANGED_PLUGINS $PLUGIN"
+
+              # Extract change summary for this plugin
+              CHANGES=$(echo "$OUTPUT" | grep -E "^\[CHANGE\]" | sed 's/\[CHANGE\] //' | head -5 || echo "Documentation updated")
+              ALL_CHANGES="$ALL_CHANGES
+          ### $PLUGIN
+          $CHANGES
+          "
+            fi
+          done
+
+          # Trim whitespace
+          CHANGED_PLUGINS=$(echo "$CHANGED_PLUGINS" | xargs)
+
+          if [ -z "$CHANGED_PLUGINS" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes detected"
+            echo "No changes detected across any plugins"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "changed_plugins=$CHANGED_PLUGINS" >> $GITHUB_OUTPUT
 
-            # Extract change summary
-            SUMMARY=$(echo "$OUTPUT" | grep -E "^\[CHANGE\]" | sed 's/\[CHANGE\] /- /' | head -10 || echo "- Documentation updated")
-            echo "summary<<EOF" >> $GITHUB_OUTPUT
-            echo "$SUMMARY" >> $GITHUB_OUTPUT
+            # Save changes summary
+            echo "changes<<EOF" >> $GITHUB_OUTPUT
+            echo "$ALL_CHANGES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
-      - name: Get plugin version
-        if: steps.sync.outputs.has_changes == 'true'
-        id: version
+      - name: Update CHANGELOG
+        if: steps.sync.outputs.has_changes == 'true' && inputs.dry_run != true
         run: |
-          VERSION=$(jq -r '.version' "plugins/${{ matrix.plugin }}/sync.json")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          DATE=$(date +%Y-%m-%d)
+          CHANGED="${{ steps.sync.outputs.changed_plugins }}"
+
+          # Create changelog entry
+          ENTRY="## [$DATE] Documentation Sync
+
+          **Updated plugins:** $CHANGED
+
+          ${{ steps.sync.outputs.changes }}
+          ---
+
+          "
+
+          # Prepend to CHANGELOG.md (or create if doesn't exist)
+          if [ -f CHANGELOG.md ]; then
+            # Insert after the header
+            {
+              head -n 4 CHANGELOG.md
+              echo ""
+              echo "$ENTRY"
+              tail -n +5 CHANGELOG.md
+            } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+          else
+            cat > CHANGELOG.md << 'HEADER'
+          # Changelog
+
+          All notable documentation sync changes to this project.
+
+          HEADER
+            echo "$ENTRY" >> CHANGELOG.md
+          fi
 
       - name: Create branch and commit
         if: steps.sync.outputs.has_changes == 'true' && inputs.dry_run != true
         id: branch
         run: |
-          BRANCH_NAME="sync/${{ matrix.plugin }}-$(date +%Y%m%d-%H%M%S)"
+          BRANCH_NAME="sync/docs-$(date +%Y%m%d-%H%M%S)"
           echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
           git checkout -b "$BRANCH_NAME"
-          git add "plugins/${{ matrix.plugin }}/"
-          git commit -m "docs(${{ matrix.plugin }}): sync documentation from upstream
+          git add plugins/ CHANGELOG.md
+          git commit -m "docs: sync documentation from upstream
 
-          Automated sync of ${{ matrix.plugin }} documentation.
-
-          ${{ steps.sync.outputs.summary }}
+          Updated plugins: ${{ steps.sync.outputs.changed_plugins }}
 
           Triggered by: ${{ github.event_name }}
           Run ID: ${{ github.run_id }}"
@@ -135,39 +150,31 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Determine source info based on plugin
-          if [ "${{ matrix.plugin }}" = "umbrel-app" ]; then
-            SOURCE_INFO="- **Source**: https://github.com/getumbrel/umbrel-apps/blob/master/README.md"
-          elif [ "${{ matrix.plugin }}" = "clawdbot" ]; then
-            SOURCE_INFO="- **Source**: https://docs.clawd.bot/"
-          else
-            SOURCE_INFO="- **Sources**: See \`plugins/${{ matrix.plugin }}/sources/registry.json\`"
-          fi
+          CHANGED="${{ steps.sync.outputs.changed_plugins }}"
+          DATE=$(date +%Y-%m-%d)
 
-          PR_BODY=$(cat << 'EOF'
+          gh pr create \
+            --title "docs: sync documentation ($DATE)" \
+            --body "$(cat <<EOF
           ## Summary
 
-          Automated documentation sync for **${{ matrix.plugin }}** plugin.
+          Automated documentation sync for plugins: **$CHANGED**
 
           ### Changes
 
-          ${{ steps.sync.outputs.summary }}
+          ${{ steps.sync.outputs.changes }}
 
           ### Details
 
-          $SOURCE_INFO
-          - **Version**: ${{ steps.version.outputs.version }}
+          - **Triggered by**: ${{ github.event_name }}
+          - **Run**: [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
           ---
 
-          *This PR was automatically generated by the [sync workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).*
+          *This PR was automatically generated by the sync workflow.*
           EOF
-          )
-
-          gh pr create \
-            --title "docs(${{ matrix.plugin }}): sync documentation from upstream" \
-            --body "$PR_BODY" \
-            --label "documentation,automated,${{ matrix.plugin }}" \
+          )" \
+            --label "documentation,automated" \
             --base main \
             --head "${{ steps.branch.outputs.branch }}"
 
@@ -176,7 +183,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Get the PR number
           PR_NUMBER=$(gh pr list --head "${{ steps.branch.outputs.branch }}" --json number --jq '.[0].number')
 
           if [ -n "$PR_NUMBER" ]; then
