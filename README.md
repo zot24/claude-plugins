@@ -56,8 +56,8 @@ Full lifecycle support for Umbrel app development:
 - **sync/diff** - Stay updated with upstream docs
 
 ```bash
-/umbrel-app:umbrel-app scaffold my-app
-/umbrel-app:umbrel-app validate ./my-app
+/umbrel-app:umbrel scaffold my-app
+/umbrel-app:umbrel validate ./my-app
 ```
 
 [Full documentation](./plugins/umbrel-app/README.md)
