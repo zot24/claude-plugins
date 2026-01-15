@@ -41,6 +41,16 @@
           "jsonpath": "$.version"
         }
       ]
+    },
+    "plugins/agent-browser": {
+      "component": "agent-browser",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "sync.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }

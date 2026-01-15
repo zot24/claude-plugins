@@ -20,9 +20,27 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      # Optional: Output release info for debugging
+      # Auto-merge release PRs
+      - name: Auto-merge release PRs
+        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get all PR numbers from the release output
+          prs='${{ steps.release.outputs.prs }}'
+          echo "PRs created: $prs"
+
+          # Parse and enable auto-merge for each PR
+          echo "$prs" | jq -r '.[].number' | while read pr_number; do
+            if [ -n "$pr_number" ]; then
+              echo "Enabling auto-merge for PR #$pr_number"
+              gh pr merge "$pr_number" --auto --squash --repo ${{ github.repository }}
+            fi
+          done
+
+      # Output release info for debugging
       - name: Release info
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         run: |
           echo "Releases created: ${{ steps.release.outputs.releases_created }}"
           echo "Release output: ${{ toJSON(steps.release.outputs) }}"
