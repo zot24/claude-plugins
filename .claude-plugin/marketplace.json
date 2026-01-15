@@ -35,6 +35,12 @@
       "source": "./plugins/chat-sdk",
       "description": "Expert on Chat SDK - Vercel's open-source template for building production-ready AI chatbots with generative UI, artifacts, and multi-provider support",
       "version": "1.0.0"
+    },
+    {
+      "name": "ai-sdk",
+      "source": "./plugins/ai-sdk",
+      "description": "Expert on AI SDK - Vercel's TypeScript toolkit for building AI applications with unified LLM API, streaming, tool calling, and agents",
+      "version": "1.0.0"
     }
   ]
 }

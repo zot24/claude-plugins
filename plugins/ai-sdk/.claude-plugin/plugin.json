@@ -1,0 +1,22 @@
+{
+  "name": "ai-sdk",
+  "description": "Expert assistant for building AI applications with Vercel's AI SDK. Covers text generation, streaming, structured outputs, tools, agents, and multi-provider support.",
+  "version": "1.0.0",
+  "author": {
+    "name": "zot24"
+  },
+  "homepage": "https://ai-sdk.dev/",
+  "repository": "https://github.com/zot24/claude-plugins",
+  "license": "MIT",
+  "keywords": [
+    "ai-sdk",
+    "vercel",
+    "llm",
+    "openai",
+    "anthropic",
+    "streaming",
+    "tool-calling",
+    "agents",
+    "typescript"
+  ]
+}
