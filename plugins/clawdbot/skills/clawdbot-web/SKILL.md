@@ -94,16 +94,30 @@ Default: `http://localhost:3001`
 
 ## Webchat
 
-Browser-based chat interface.
+Browser-based chat interface served by the Gateway.
+
+### Default Access
+
+WebChat is served directly by the Gateway on the same port (default 18789):
+
+```
+http://localhost:18789/chat
+```
+
+**Note**: WebChat runs on the Gateway port, NOT a separate port. Port 18790 is the Bridge (TCP) for mobile nodes, not webchat.
 
 ### Starting Webchat
 
 ```bash
-# Start gateway with webchat
+# Start gateway (webchat included by default)
+clawdbot gateway
+
+# Or explicitly enable
 clawdbot gateway --webchat
 
-# Custom port
-clawdbot gateway --webchat --webchat-port 8080
+# Custom gateway port (webchat follows)
+clawdbot gateway --port 8080
+# Access at: http://localhost:8080/chat
 ```
 
 ### Configuration
@@ -113,7 +127,6 @@ clawdbot gateway --webchat --webchat-port 8080
   "web": {
     "webchat": {
       "enabled": true,
-      "port": 8080,
       "title": "My Assistant",
       "theme": "dark",
       "welcomeMessage": "Hello! How can I help?"
@@ -121,6 +134,21 @@ clawdbot gateway --webchat --webchat-port 8080
   }
 }
 ```
+
+### Docker Access
+
+For Docker deployment, ensure the Gateway binds to `lan`:
+
+```json
+{
+  "gateway": {
+    "bind": "lan",
+    "auth": { "mode": "token", "token": "your-token" }
+  }
+}
+```
+
+Then access at `http://your-host:18789/chat`
 
 ### Webchat Features
 

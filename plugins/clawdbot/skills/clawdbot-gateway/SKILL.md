@@ -159,11 +159,27 @@ Location: `~/.clawdbot/clawdbot.json`
 
 ### Bind Options
 
-| Value | Address |
-|-------|---------|
-| `loopback` | `127.0.0.1` |
-| `lan` | `0.0.0.0` (all interfaces) |
-| IP address | Specific IP |
+| Value | Address | Auth Required |
+|-------|---------|---------------|
+| `loopback` | `127.0.0.1` | No |
+| `lan` | `0.0.0.0` (all interfaces) | **Yes** |
+| `tailnet` | Tailscale IP | **Yes** |
+| `auto` | Auto-detect | **Yes** |
+| IP address | Specific IP | Depends |
+
+**Important for Docker**: Use `bind: "lan"` to expose the gateway outside the container. This requires authentication via `gateway.auth.token` or `CLAWDBOT_GATEWAY_TOKEN` env var.
+
+---
+
+## Port Reference
+
+| Port | Protocol | Service | Description |
+|------|----------|---------|-------------|
+| 18789 | HTTP + WebSocket | Gateway | Main gateway, serves WebChat at `/chat` |
+| 18790 | TCP (JSONL) | Bridge | Mobile node connections - **NOT HTTP** |
+| 18793 | HTTP | Canvas | File serving for WebViews |
+
+**Common mistake**: Port 18790 is NOT webchat. WebChat UI is at `http://host:18789/chat`.
 
 ---
 

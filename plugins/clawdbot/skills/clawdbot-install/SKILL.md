@@ -122,6 +122,80 @@ CMD ["clawdbot", "gateway"]
 
 ---
 
+## Docker Port Reference
+
+**CRITICAL**: Understanding Clawdbot ports is essential for Docker deployment.
+
+| Port | Protocol | Service | Description |
+|------|----------|---------|-------------|
+| 18789 | HTTP + WebSocket | Gateway | Main gateway, WebChat UI at `/chat`, WebSocket API |
+| 18790 | TCP (JSONL) | Bridge | Mobile node connections (iOS/Android) - **NOT HTTP!** |
+| 18793 | HTTP | Canvas | File serving for node WebViews |
+
+**Common mistake**: Port 18790 is NOT the webchat - it's a TCP bridge for mobile nodes. The webchat UI is served by the Gateway at `http://host:18789/chat`.
+
+---
+
+## Docker Network Configuration
+
+### Binding to External Interfaces
+
+By default, Clawdbot binds to `loopback` (127.0.0.1) which is NOT accessible from outside the container.
+
+**For Docker deployment, you MUST use `bind: "lan"`**:
+
+```json
+{
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "your-secure-token"
+    }
+  }
+}
+```
+
+**Important**: Non-loopback binds (`lan`, `tailnet`, `auto`) **require authentication**. Set either:
+- `gateway.auth.token` in config
+- `CLAWDBOT_GATEWAY_TOKEN` environment variable
+
+### Docker Compose for Umbrel/Self-Hosted
+
+```yaml
+version: '3.8'
+
+services:
+  clawdbot:
+    image: ghcr.io/clawdbot/clawdbot:latest
+    restart: unless-stopped
+    ports:
+      - "18789:18789"  # Gateway + WebChat (HTTP/WS)
+    volumes:
+      - ./data:/root/.clawdbot
+      - ./workspace:/root/clawd
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - CLAWDBOT_GATEWAY_TOKEN=${CLAWDBOT_GATEWAY_TOKEN:-auto}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+```
+
+### Accessing WebChat
+
+After starting, access the WebChat UI at:
+```
+http://your-host:18789/chat
+```
+
+---
+
 ## NPM Installation
 
 ### Global Install
