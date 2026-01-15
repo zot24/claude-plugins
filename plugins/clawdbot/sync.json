@@ -1,6 +1,6 @@
 {
   "name": "clawdbot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Clawdbot AI assistant framework - complete documentation",
   "sync_script": "sync.sh",
   "cache_dir": ".cache",

@@ -1,5 +1,5 @@
 {
   "plugins/umbrel-app": "1.2.0",
   "plugins/claude-code-expert": "1.0.0",
-  "plugins/clawdbot": "2.0.0"
+  "plugins/clawdbot": "2.1.0"
 }
