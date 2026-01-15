@@ -211,6 +211,7 @@ Each plugin syncs documentation from upstream sources.
 | claude-code-expert | Multiple sources via registry.json | Registry-based |
 | clawdbot | https://docs.clawd.bot/ | URL-based |
 | agent-browser | https://github.com/vercel-labs/agent-browser + https://agent-browser.dev/ | URL-based |
+| chat-sdk | https://github.com/vercel/ai-chatbot + https://chat-sdk.dev/ | URL-based |
 
 ### When to Sync
 

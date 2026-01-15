@@ -1,0 +1,56 @@
+{
+  "name": "chat-sdk",
+  "version": "1.0.0",
+  "description": "Chat SDK - Vercel's open-source AI chatbot template",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/vercel/ai-chatbot/main/README.md",
+      "target": "skills/chat-sdk/docs/readme-upstream.md",
+      "type": "raw",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs",
+      "target": "skills/chat-sdk/docs/overview.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/setup",
+      "target": "skills/chat-sdk/docs/setup.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/architecture",
+      "target": "skills/chat-sdk/docs/architecture.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/customization/models",
+      "target": "skills/chat-sdk/docs/models.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/customization/artifacts",
+      "target": "skills/chat-sdk/docs/artifacts.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/customization/theming",
+      "target": "skills/chat-sdk/docs/theming.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://chat-sdk.dev/docs/deploying",
+      "target": "skills/chat-sdk/docs/deployment.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    }
+  ],
+  "cache_dir": ".cache"
+}

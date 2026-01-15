@@ -29,6 +29,12 @@
       "source": "./plugins/agent-browser",
       "description": "Expert on agent-browser - Vercel's headless browser automation CLI for AI agents with 50+ commands, snapshots, and multi-session support",
       "version": "1.0.0"
+    },
+    {
+      "name": "chat-sdk",
+      "source": "./plugins/chat-sdk",
+      "description": "Expert on Chat SDK - Vercel's open-source template for building production-ready AI chatbots with generative UI, artifacts, and multi-provider support",
+      "version": "1.0.0"
     }
   ]
 }

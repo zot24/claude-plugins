@@ -1,0 +1,21 @@
+{
+  "name": "chat-sdk",
+  "description": "Expert assistant for building AI chatbot applications with Vercel's Chat SDK. Covers setup, architecture, customization, artifacts, and deployment.",
+  "version": "1.0.0",
+  "author": {
+    "name": "zot24"
+  },
+  "homepage": "https://chat-sdk.dev/",
+  "repository": "https://github.com/zot24/claude-plugins",
+  "license": "MIT",
+  "keywords": [
+    "chat-sdk",
+    "ai-chatbot",
+    "nextjs",
+    "vercel",
+    "ai-sdk",
+    "generative-ui",
+    "artifacts",
+    "chatgpt-clone"
+  ]
+}
