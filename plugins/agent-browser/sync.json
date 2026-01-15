@@ -1,0 +1,68 @@
+{
+  "name": "agent-browser",
+  "version": "1.0.0",
+  "description": "Browser automation CLI for AI agents - Vercel Labs",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/vercel-labs/agent-browser/main/README.md",
+      "target": "skills/agent-browser/docs/readme-upstream.md",
+      "type": "raw",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/installation",
+      "target": "skills/agent-browser/docs/installation.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/quick-start",
+      "target": "skills/agent-browser/docs/quick-start.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/commands",
+      "target": "skills/agent-browser/docs/commands.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/selectors",
+      "target": "skills/agent-browser/docs/selectors.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/sessions",
+      "target": "skills/agent-browser/docs/sessions.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/snapshots",
+      "target": "skills/agent-browser/docs/snapshots.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/streaming",
+      "target": "skills/agent-browser/docs/streaming.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/agent-mode",
+      "target": "skills/agent-browser/docs/agent-mode.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://agent-browser.dev/cdp-mode",
+      "target": "skills/agent-browser/docs/cdp-mode.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    }
+  ],
+  "cache_dir": ".cache"
+}

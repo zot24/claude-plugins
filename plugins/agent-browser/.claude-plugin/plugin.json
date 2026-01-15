@@ -1,0 +1,20 @@
+{
+  "name": "agent-browser",
+  "description": "Expert assistant for browser automation with AI agents using Vercel's agent-browser CLI. Covers commands, selectors, sessions, snapshots, and integration patterns.",
+  "version": "1.0.0",
+  "author": {
+    "name": "zot24"
+  },
+  "homepage": "https://agent-browser.dev/",
+  "repository": "https://github.com/zot24/claude-plugins",
+  "license": "MIT",
+  "keywords": [
+    "browser-automation",
+    "ai-agents",
+    "playwright",
+    "headless-browser",
+    "web-scraping",
+    "vercel",
+    "cli"
+  ]
+}

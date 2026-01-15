@@ -50,7 +50,7 @@ jobs:
         run: |
           chmod +x .github/scripts/sync-plugin.sh
 
-          PLUGINS=("umbrel-app" "claude-code-expert" "clawdbot")
+          PLUGINS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser")
           CHANGED_PLUGINS=""
           ALL_CHANGES=""
 

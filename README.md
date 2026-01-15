@@ -9,6 +9,7 @@ A collection of Claude Code plugins for various development workflows.
 | [umbrel-app](./plugins/umbrel-app) | Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS |
 | [claude-code-expert](./plugins/claude-code-expert) | Comprehensive Claude Code & Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, MCP. |
 | [clawdbot](./plugins/clawdbot) | Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams) |
+| [agent-browser](./plugins/agent-browser) | Expert on agent-browser - Vercel's headless browser automation CLI for AI agents with 50+ commands, snapshots, and multi-session support |
 
 ## Installation
 
@@ -72,6 +73,12 @@ Format: `/plugin-name:command-name [arguments]`
 /clawdbot:clawdbot channel telegram       # Configure Telegram
 /clawdbot:clawdbot diagnose               # Troubleshoot issues
 /clawdbot:clawdbot gateway                # Gateway configuration
+
+# Agent browser automation
+/agent-browser:agent-browser open <url>   # Open a webpage
+/agent-browser:agent-browser snapshot     # Get element refs
+/agent-browser:agent-browser click @e2    # Click by ref
+/agent-browser:agent-browser screenshot   # Capture viewport
 ```
 
 ### Natural Language
@@ -85,6 +92,8 @@ You can also just describe what you want:
 "What are the best practices for hooks?"
 "How do I set up WhatsApp with Clawdbot?"
 "My Telegram bot isn't receiving messages"
+"Automate browser login with agent-browser"
+"How do I use snapshots for element selection?"
 ```
 
 The plugins auto-activate based on context.
@@ -164,6 +173,27 @@ Expert on Clawdbot AI assistant framework:
 ```
 
 [Full documentation](./plugins/clawdbot/README.md)
+
+### agent-browser
+
+Expert on Vercel's browser automation CLI for AI agents:
+
+- **open** - Navigate to webpages
+- **snapshot** - Get accessibility tree with element refs
+- **click/fill/type** - Interact with elements by ref
+- **screenshot** - Capture viewport or full page
+- **session** - Manage isolated browser instances
+- **network** - Intercept and mock requests
+- **sync/diff** - Stay updated with upstream docs
+
+```bash
+/agent-browser:agent-browser open https://example.com
+/agent-browser:agent-browser snapshot -i
+/agent-browser:agent-browser click @e2
+/agent-browser:agent-browser screenshot page.png
+```
+
+[Full documentation](./plugins/agent-browser/README.md)
 
 ## Adding New Plugins
 
@@ -256,7 +286,10 @@ claude-plugins/
 │   ├── claude-code-expert/       # Claude Code knowledge base
 │   │   ├── sync.json
 │   │   └── ...
-│   └── clawdbot/                 # Clawdbot AI assistant framework
+│   ├── clawdbot/                 # Clawdbot AI assistant framework
+│   │   ├── sync.json
+│   │   └── ...
+│   └── agent-browser/            # Browser automation for AI agents
 │       ├── sync.json
 │       └── ...
 └── README.md
