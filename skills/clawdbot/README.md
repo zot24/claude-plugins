@@ -1,4 +1,4 @@
-# Clawdbot Plugin
+# Clawdbot Skill
 
 Expert assistant for Clawdbot - the AI assistant framework that connects Claude and other LLMs to messaging platforms.
 
@@ -18,10 +18,10 @@ Clawdbot is an AI assistant framework that:
 
 ```bash
 # Add marketplace
-/plugin marketplace add zot24/claude-plugins
+/plugin marketplace add zot24/skills
 
-# Install plugin
-/plugin install clawdbot@zot24-claude-code-plugins
+# Install skill
+/plugin install clawdbot@zot24-skills
 ```
 
 ### Project-Level Installation
@@ -31,7 +31,7 @@ Add to your project's `.claude/settings.json`:
 ```json
 {
   "enabledPlugins": {
-    "clawdbot@zot24-claude-code-plugins": true
+    "clawdbot@zot24-skills": true
   }
 }
 ```
@@ -98,7 +98,7 @@ Show available commands.
 
 ## Natural Language
 
-The plugin auto-activates when you mention Clawdbot topics:
+The skill auto-activates when you mention Clawdbot topics:
 - "How do I set up WhatsApp with Clawdbot?"
 - "My Telegram bot isn't receiving messages"
 - "Configure Discord for Clawdbot"
@@ -262,12 +262,12 @@ clawdbot gateway status
 | Skills | https://docs.clawd.bot/tools/skills |
 | CLI Reference | https://docs.clawd.bot/cli/message |
 
-## Plugin Structure
+## Skill Structure
 
 ```
 clawdbot/
 ├── .claude-plugin/
-│   └── plugin.json       # Plugin manifest
+│   └── plugin.json       # Skill manifest
 ├── commands/
 │   └── clawdbot.md       # Slash command definition
 ├── skills/

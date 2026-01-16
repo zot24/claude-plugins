@@ -1,4 +1,4 @@
-# Agent Browser Plugin
+# Agent Browser Skill
 
 Expert assistant for browser automation with AI agents using [Vercel's agent-browser](https://github.com/vercel-labs/agent-browser) CLI.
 
@@ -15,11 +15,11 @@ Expert assistant for browser automation with AI agents using [Vercel's agent-bro
 Add to your Claude Code project:
 
 ```bash
-# Clone the plugins repository
-git clone https://github.com/zot24/claude-plugins.git
+# Clone the skills repository
+git clone https://github.com/zot24/skills.git
 
 # Or add as a submodule
-git submodule add https://github.com/zot24/claude-plugins.git .claude-plugins
+git submodule add https://github.com/zot24/skills.git .claude-skills
 ```
 
 ## Usage
@@ -75,5 +75,5 @@ agent-browser close
 Documentation syncs from upstream automatically. Manual sync:
 
 ```bash
-.github/scripts/sync-plugin.sh plugins/agent-browser
+.github/scripts/sync-skill.sh skills/agent-browser
 ```

@@ -1,10 +1,10 @@
 #!/bin/bash
-# sync-plugin.sh - Generic sync script for all plugins
-# Usage: ./sync-plugin.sh <plugin-dir> [--force] [--dry-run]
+# sync-skill.sh - Generic sync script for all skills
+# Usage: ./sync-skill.sh <skill-dir> [--force] [--dry-run]
 #
-# Reads sync.json from plugin directory and handles:
+# Reads sync.json from skill directory and handles:
 # - Single URL sources (fetches and updates target file)
-# - Registry-based sources (delegates to plugin's sync script)
+# - Registry-based sources (delegates to skill's sync script)
 
 set -euo pipefail
 
@@ -25,7 +25,7 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 log_change() { echo -e "${BLUE}[CHANGE]${NC} $1"; }
 
 # Parse arguments
-PLUGIN_DIR=""
+SKILL_DIR=""
 FORCE=false
 DRY_RUN=false
 
@@ -35,9 +35,9 @@ while [[ $# -gt 0 ]]; do
         --dry-run) DRY_RUN=true; shift ;;
         --help|-h)
             cat << EOF
-Usage: $0 <plugin-dir> [options]
+Usage: $0 <skill-dir> [options]
 
-Sync plugin documentation from upstream sources.
+Sync skill documentation from upstream sources.
 
 Options:
   --force      Force sync even if cached
@@ -45,33 +45,33 @@ Options:
   --help       Show this help
 
 Examples:
-  $0 plugins/umbrel-app
-  $0 plugins/claude-code-expert --force
-  $0 plugins/umbrel-app --dry-run
+  $0 skills/umbrel-app
+  $0 skills/claude-code-expert --force
+  $0 skills/umbrel-app --dry-run
 EOF
             exit 0
             ;;
         *)
-            if [ -z "$PLUGIN_DIR" ]; then
-                PLUGIN_DIR="$1"
+            if [ -z "$SKILL_DIR" ]; then
+                SKILL_DIR="$1"
             fi
             shift
             ;;
     esac
 done
 
-if [ -z "$PLUGIN_DIR" ]; then
-    log_error "Plugin directory is required"
-    echo "Usage: $0 <plugin-dir> [--force] [--dry-run]"
+if [ -z "$SKILL_DIR" ]; then
+    log_error "Skill directory is required"
+    echo "Usage: $0 <skill-dir> [--force] [--dry-run]"
     exit 1
 fi
 
 # Resolve to absolute path
-PLUGIN_DIR="$(cd "$PLUGIN_DIR" && pwd)"
-MANIFEST="$PLUGIN_DIR/sync.json"
+SKILL_DIR="$(cd "$SKILL_DIR" && pwd)"
+MANIFEST="$SKILL_DIR/sync.json"
 
 if [ ! -f "$MANIFEST" ]; then
-    log_error "sync.json not found in $PLUGIN_DIR"
+    log_error "sync.json not found in $SKILL_DIR"
     exit 1
 fi
 
@@ -150,17 +150,17 @@ fetch_url_source() {
         log_info "Cached: $(basename "$cache_file")"
 
         # Compare with target and detect changes
-        if [ -f "$PLUGIN_DIR/$target" ]; then
+        if [ -f "$SKILL_DIR/$target" ]; then
             # Extract content for comparison (skip metadata headers)
             local upstream_content=$(tail -n +6 "$cache_file" | head -100)
-            local target_content=$(head -100 "$PLUGIN_DIR/$target")
+            local target_content=$(head -100 "$SKILL_DIR/$target")
 
             # Simple diff check for key patterns
             local changes=()
 
             # Check for new environment variables
             local new_vars=$(grep -oE '\$APP_[A-Z_]+' "$cache_file" | sort -u | \
-                comm -23 - <(grep -oE '\$APP_[A-Z_]+' "$PLUGIN_DIR/$target" 2>/dev/null | sort -u) 2>/dev/null || true)
+                comm -23 - <(grep -oE '\$APP_[A-Z_]+' "$SKILL_DIR/$target" 2>/dev/null | sort -u) 2>/dev/null || true)
             if [ -n "$new_vars" ]; then
                 for var in $new_vars; do
                     log_change "New environment variable: $var"
@@ -169,7 +169,7 @@ fetch_url_source() {
 
             # Check for version changes
             local upstream_version=$(grep -oE 'manifestVersion[: ]+[0-9.]+' "$cache_file" | head -1 || echo "")
-            local target_version=$(grep -oE 'manifestVersion[: ]+[0-9.]+' "$PLUGIN_DIR/$target" | head -1 || echo "")
+            local target_version=$(grep -oE 'manifestVersion[: ]+[0-9.]+' "$SKILL_DIR/$target" | head -1 || echo "")
             if [ "$upstream_version" != "$target_version" ] && [ -n "$upstream_version" ]; then
                 log_change "manifestVersion changed: $target_version -> $upstream_version"
             fi
@@ -183,17 +183,17 @@ fetch_url_source() {
     fi
 }
 
-# Handle registry-based sync (delegate to plugin script)
+# Handle registry-based sync (delegate to skill script)
 sync_registry() {
     local sync_script="$1"
-    local full_script="$PLUGIN_DIR/$sync_script"
+    local full_script="$SKILL_DIR/$sync_script"
 
     if [ ! -f "$full_script" ]; then
         log_error "Sync script not found: $full_script"
         return 1
     fi
 
-    log_info "Running plugin sync script: $sync_script"
+    log_info "Running skill sync script: $sync_script"
 
     local args=""
     if [ "$FORCE" = "true" ]; then
@@ -201,7 +201,7 @@ sync_registry() {
     fi
 
     chmod +x "$full_script"
-    cd "$PLUGIN_DIR"
+    cd "$SKILL_DIR"
 
     if [ "$DRY_RUN" = "true" ]; then
         # For dry-run, use check-updates if available
@@ -242,11 +242,11 @@ bump_version() {
 main() {
     check_deps
 
-    local plugin_name=$(jq -r '.name' "$MANIFEST")
+    local skill_name=$(jq -r '.name' "$MANIFEST")
     local source_type=$(jq -r '.sources' "$MANIFEST")
 
-    log_info "Syncing plugin: $plugin_name"
-    log_info "Plugin directory: $PLUGIN_DIR"
+    log_info "Syncing skill: $skill_name"
+    log_info "Skill directory: $SKILL_DIR"
     log_info "Dry run: $DRY_RUN"
     log_info "Force: $FORCE"
 
@@ -258,12 +258,12 @@ main() {
         sync_registry "$sync_script"
 
         # Check if state.json was modified
-        if ! git diff --quiet "$PLUGIN_DIR" 2>/dev/null; then
+        if ! git diff --quiet "$SKILL_DIR" 2>/dev/null; then
             had_changes=true
         fi
     else
         # URL-based sources (umbrel-app)
-        local cache_dir="$PLUGIN_DIR/$(jq -r '.cache_dir // ".cache"' "$MANIFEST")"
+        local cache_dir="$SKILL_DIR/$(jq -r '.cache_dir // ".cache"' "$MANIFEST")"
         local freshness_days=$(jq -r '.freshness_days // 14' "$MANIFEST")
 
         jq -c '.sources[]' "$MANIFEST" | while read -r source; do
@@ -275,21 +275,21 @@ main() {
         done
 
         # Check for changes
-        if ! git diff --quiet "$PLUGIN_DIR" 2>/dev/null; then
+        if ! git diff --quiet "$SKILL_DIR" 2>/dev/null; then
             had_changes=true
         fi
     fi
 
     # Output summary for CI
     if [ "$had_changes" = "true" ]; then
-        log_info "Changes detected in $plugin_name"
+        log_info "Changes detected in $skill_name"
         echo "has_changes=true"
     else
-        log_info "No changes detected in $plugin_name"
+        log_info "No changes detected in $skill_name"
         echo "has_changes=false"
     fi
 
-    log_info "Sync complete: $plugin_name"
+    log_info "Sync complete: $skill_name"
 }
 
 main

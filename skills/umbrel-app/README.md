@@ -1,6 +1,6 @@
-# Umbrel App Plugin for Claude Code
+# Umbrel App Skill for Claude Code
 
-A comprehensive Claude Code plugin for developing, packaging, testing, and submitting apps for umbrelOS.
+A comprehensive Claude Code skill for developing, packaging, testing, and submitting apps for umbrelOS.
 
 ## Features
 
@@ -30,17 +30,17 @@ A comprehensive Claude Code plugin for developing, packaging, testing, and submi
 ### Option 1: Local Testing
 
 ```bash
-claude --plugin-dir /path/to/umbrel-app-plugin
+claude --plugin-dir /path/to/umbrel-app
 ```
 
 ### Option 2: Install from GitHub
 
 ```bash
 # Add the marketplace
-/plugin marketplace add zot24/claude-plugins
+/plugin marketplace add zot24/skills
 
-# Install the plugin
-/plugin install umbrel-app@zot24-claude-code-plugins
+# Install the skill
+/plugin install umbrel-app@zot24-skills
 ```
 
 ### Option 3: Project-Level Installation
@@ -50,7 +50,7 @@ Add to your project's `.claude/settings.json`:
 ```json
 {
   "enabledPlugins": {
-    "umbrel-app@zot24-claude-code-plugins": true
+    "umbrel-app@zot24-skills": true
   }
 }
 ```
@@ -82,7 +82,7 @@ The skill also triggers automatically when you mention:
 
 ## CLI Reference
 
-The plugin includes comprehensive documentation for Umbrel CLI commands.
+The skill includes comprehensive documentation for Umbrel CLI commands.
 
 ### System Commands
 
@@ -222,9 +222,9 @@ ssh umbrel@umbrel.local umbreld client apps.install.mutate --appId my-app
 
 Use `/umbrel-app:umbrel pr ./my-app` to generate the PR template.
 
-## Keeping the Plugin Updated
+## Keeping the Skill Updated
 
-The plugin includes commands to stay synchronized with the official Umbrel documentation.
+The skill includes commands to stay synchronized with the official Umbrel documentation.
 
 ### Check for Changes
 
@@ -259,12 +259,12 @@ The authoritative documentation is at:
 | Testing | Commands, dev environment setup |
 | Submission | PR requirements, asset specs |
 
-## Plugin Structure
+## Skill Structure
 
 ```
-umbrel-app-plugin/
+umbrel-app/
 ├── .claude-plugin/
-│   └── plugin.json       # Plugin manifest
+│   └── plugin.json       # Skill manifest
 ├── commands/
 │   └── umbrel.md         # Slash command definition
 ├── skills/

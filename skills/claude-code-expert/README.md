@@ -1,4 +1,4 @@
-# Claude Code Expert Plugin
+# Claude Code Expert Skill
 
 Knowledge base for Claude Code and the Anthropic ecosystem. Provides official patterns, validation checklists, and synced documentation for creating agents, skills, hooks, and commands.
 
@@ -51,7 +51,7 @@ claude-code-expert/
 
 ## Documentation Sources
 
-The plugin syncs from these official sources (defined in `sources/registry.json`):
+The skill syncs from these official sources (defined in `sources/registry.json`):
 
 | Source | Content |
 |--------|---------|

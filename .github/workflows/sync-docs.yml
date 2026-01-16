@@ -1,4 +1,4 @@
-name: Sync Plugin Documentation
+name: Sync Skill Documentation
 
 on:
   schedule:
@@ -42,49 +42,49 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Sync all plugins
+      - name: Sync all skills
         id: sync
         env:
           FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
           DRY_RUN_FLAG: ${{ inputs.dry_run == true && '--dry-run' || '' }}
         run: |
-          chmod +x .github/scripts/sync-plugin.sh
+          chmod +x .github/scripts/sync-skill.sh
 
-          PLUGINS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills")
-          CHANGED_PLUGINS=""
+          SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills")
+          CHANGED_SKILLS=""
           ALL_CHANGES=""
 
-          for PLUGIN in "${PLUGINS[@]}"; do
-            echo "=== Syncing $PLUGIN ==="
+          for SKILL in "${SKILLS[@]}"; do
+            echo "=== Syncing $SKILL ==="
 
-            OUTPUT=$(.github/scripts/sync-plugin.sh "plugins/$PLUGIN" $FORCE_FLAG $DRY_RUN_FLAG 2>&1) || true
+            OUTPUT=$(.github/scripts/sync-skill.sh "skills/$SKILL" $FORCE_FLAG $DRY_RUN_FLAG 2>&1) || true
             echo "$OUTPUT"
 
-            # Check if this plugin had changes
-            if git diff --quiet "plugins/$PLUGIN/"; then
-              echo "No changes for $PLUGIN"
+            # Check if this skill had changes
+            if git diff --quiet "skills/$SKILL/"; then
+              echo "No changes for $SKILL"
             else
-              echo "Changes detected for $PLUGIN"
-              CHANGED_PLUGINS="$CHANGED_PLUGINS $PLUGIN"
+              echo "Changes detected for $SKILL"
+              CHANGED_SKILLS="$CHANGED_SKILLS $SKILL"
 
-              # Extract change summary for this plugin
+              # Extract change summary for this skill
               CHANGES=$(echo "$OUTPUT" | grep -E "^\[CHANGE\]" | sed 's/\[CHANGE\] //' | head -5 || echo "Documentation updated")
               ALL_CHANGES="$ALL_CHANGES
-          ### $PLUGIN
+          ### $SKILL
           $CHANGES
           "
             fi
           done
 
           # Trim whitespace
-          CHANGED_PLUGINS=$(echo "$CHANGED_PLUGINS" | xargs)
+          CHANGED_SKILLS=$(echo "$CHANGED_SKILLS" | xargs)
 
-          if [ -z "$CHANGED_PLUGINS" ]; then
+          if [ -z "$CHANGED_SKILLS" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes detected across any plugins"
+            echo "No changes detected across any skills"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "changed_plugins=$CHANGED_PLUGINS" >> $GITHUB_OUTPUT
+            echo "changed_skills=$CHANGED_SKILLS" >> $GITHUB_OUTPUT
 
             # Save changes summary
             echo "changes<<EOF" >> $GITHUB_OUTPUT
@@ -96,12 +96,12 @@ jobs:
         if: steps.sync.outputs.has_changes == 'true' && inputs.dry_run != true
         run: |
           DATE=$(date +%Y-%m-%d)
-          CHANGED="${{ steps.sync.outputs.changed_plugins }}"
+          CHANGED="${{ steps.sync.outputs.changed_skills }}"
 
           # Create changelog entry
           ENTRY="## [$DATE] Documentation Sync
 
-          **Updated plugins:** $CHANGED
+          **Updated skills:** $CHANGED
 
           ${{ steps.sync.outputs.changes }}
           ---
@@ -135,10 +135,10 @@ jobs:
           echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
           git checkout -b "$BRANCH_NAME"
-          git add plugins/ CHANGELOG.md
+          git add skills/ CHANGELOG.md
           git commit -m "docs: sync documentation from upstream
 
-          Updated plugins: ${{ steps.sync.outputs.changed_plugins }}
+          Updated skills: ${{ steps.sync.outputs.changed_skills }}
 
           Triggered by: ${{ github.event_name }}
           Run ID: ${{ github.run_id }}"
@@ -150,7 +150,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CHANGED="${{ steps.sync.outputs.changed_plugins }}"
+          CHANGED="${{ steps.sync.outputs.changed_skills }}"
           DATE=$(date +%Y-%m-%d)
 
           gh pr create \
@@ -158,7 +158,7 @@ jobs:
             --body "$(cat <<EOF
           ## Summary
 
-          Automated documentation sync for plugins: **$CHANGED**
+          Automated documentation sync for skills: **$CHANGED**
 
           ### Changes
 

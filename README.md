@@ -1,28 +1,28 @@
-# Claude Plugins
+# Claude Code Skills
 
-A collection of Claude Code plugins for various development workflows.
+A collection of Claude Code skills for various development workflows.
 
-## Available Plugins
+## Available Skills
 
-| Plugin | Description |
-|--------|-------------|
-| [umbrel-app](./plugins/umbrel-app) | Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS |
-| [claude-code-expert](./plugins/claude-code-expert) | Comprehensive Claude Code & Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, MCP. |
-| [clawdbot](./plugins/clawdbot) | Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams) |
-| [agent-browser](./plugins/agent-browser) | Expert on agent-browser - Vercel's headless browser automation CLI for AI agents with 50+ commands, snapshots, and multi-session support |
+| Skill | Description |
+|-------|-------------|
+| [umbrel-app](./skills/umbrel-app) | Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS |
+| [claude-code-expert](./skills/claude-code-expert) | Comprehensive Claude Code & Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, MCP. |
+| [clawdbot](./skills/clawdbot) | Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams) |
+| [agent-browser](./skills/agent-browser) | Expert on agent-browser - Vercel's headless browser automation CLI for AI agents with 50+ commands, snapshots, and multi-session support |
 
 ## Installation
 
 ### Add the Marketplace
 
 ```bash
-/plugin marketplace add zot24/claude-plugins
+/plugin marketplace add zot24/skills
 ```
 
-### Install a Plugin
+### Install a Skill
 
 ```bash
-/plugin install umbrel-app@zot24-claude-code-plugins
+/plugin install umbrel-app@zot24-skills
 ```
 
 ### Or Add to Project Settings
@@ -32,26 +32,26 @@ Add to your project's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "zot24-claude-code-plugins": {
+    "zot24-skills": {
       "source": {
         "source": "github",
-        "repo": "zot24/claude-plugins"
+        "repo": "zot24/skills"
       }
     }
   },
   "enabledPlugins": {
-    "umbrel-app@zot24-claude-code-plugins": true
+    "umbrel-app@zot24-skills": true
   }
 }
 ```
 
 ## Usage
 
-Once installed, you can use plugins via **slash commands** or **natural language**.
+Once installed, you can use skills via **slash commands** or **natural language**.
 
 ### Slash Commands
 
-Format: `/plugin-name:command-name [arguments]`
+Format: `/skill-name:command-name [arguments]`
 
 ```bash
 # Umbrel app development
@@ -96,7 +96,7 @@ You can also just describe what you want:
 "How do I use snapshots for element selection?"
 ```
 
-The plugins auto-activate based on context.
+The skills auto-activate based on context.
 
 ### Quick Start Examples
 
@@ -115,7 +115,7 @@ The plugins auto-activate based on context.
 > /claude-code-expert:claude create hook
 ```
 
-## Plugin Details
+## Skill Details
 
 ### umbrel-app
 
@@ -133,7 +133,7 @@ Full lifecycle support for Umbrel app development:
 /umbrel-app:umbrel validate ./my-app
 ```
 
-[Full documentation](./plugins/umbrel-app/README.md)
+[Full documentation](./skills/umbrel-app/README.md)
 
 ### claude-code-expert
 
@@ -152,7 +152,7 @@ Comprehensive Claude Code and Anthropic ecosystem knowledge:
 /claude-code-expert:claude features
 ```
 
-[Full documentation](./plugins/claude-code-expert/README.md)
+[Full documentation](./skills/claude-code-expert/README.md)
 
 ### clawdbot
 
@@ -172,7 +172,7 @@ Expert on Clawdbot AI assistant framework:
 /clawdbot:clawdbot diagnose
 ```
 
-[Full documentation](./plugins/clawdbot/README.md)
+[Full documentation](./skills/clawdbot/README.md)
 
 ### agent-browser
 
@@ -193,14 +193,14 @@ Expert on Vercel's browser automation CLI for AI agents:
 /agent-browser:agent-browser screenshot page.png
 ```
 
-[Full documentation](./plugins/agent-browser/README.md)
+[Full documentation](./skills/agent-browser/README.md)
 
-## Adding New Plugins
+## Adding New Skills
 
-1. Create a new directory under `plugins/`:
+1. Create a new directory under `skills/`:
    ```
-   plugins/
-   └── my-new-plugin/
+   skills/
+   └── my-new-skill/
        ├── .claude-plugin/
        │   └── plugin.json
        ├── commands/
@@ -212,7 +212,7 @@ Expert on Vercel's browser automation CLI for AI agents:
 2. Create `sync.json` for automated updates:
    ```json
    {
-     "name": "my-new-plugin",
+     "name": "my-new-skill",
      "version": "1.0.0",
      "description": "What it does",
      "sources": [
@@ -229,8 +229,8 @@ Expert on Vercel's browser automation CLI for AI agents:
 3. Add entry to `.claude-plugin/marketplace.json`:
    ```json
    {
-     "name": "my-new-plugin",
-     "source": "./plugins/my-new-plugin",
+     "name": "my-new-skill",
+     "source": "./skills/my-new-skill",
      "description": "What it does",
      "version": "1.0.0"
    }
@@ -240,16 +240,16 @@ Expert on Vercel's browser automation CLI for AI agents:
 
 ## CI Automation
 
-The repository includes automated workflows for keeping plugin documentation up to date.
+The repository includes automated workflows for keeping skill documentation up to date.
 
 ### Scheduled Sync
 
 Runs bi-weekly (1st and 15th of each month) to check for upstream documentation changes.
 
-**Manual trigger**: Actions > Sync Plugin Documentation > Run workflow
+**Manual trigger**: Actions > Sync Skill Documentation > Run workflow
 
 Options:
-- `plugin`: all, umbrel-app, claude-code-expert, or clawdbot
+- `skill`: all, umbrel-app, claude-code-expert, or clawdbot
 - `force`: Force sync even without detected changes
 - `dry_run`: Check for changes without creating PR
 
@@ -270,16 +270,16 @@ SYNC_SCHEDULE: "0 6 1,15 * *"  # Cron format
 ## Structure
 
 ```
-claude-plugins/
+skills/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── .github/
 │   ├── scripts/
-│   │   └── sync-plugin.sh        # Generic sync script
+│   │   └── sync-skill.sh         # Generic sync script
 │   └── workflows/
 │       ├── sync-docs.yml         # Scheduled sync workflow
 │       └── release-on-merge.yml  # Auto-release on PR merge
-├── plugins/
+├── skills/
 │   ├── umbrel-app/               # Umbrel app development
 │   │   ├── sync.json
 │   │   └── ...

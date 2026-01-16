@@ -1,6 +1,6 @@
 {
-  "name": "zot24-claude-code-plugins",
-  "description": "A collection of Claude Code plugins for various development workflows",
+  "name": "zot24-skills",
+  "description": "A collection of Claude Code skills for various development workflows",
   "owner": {
     "name": "zot24",
     "email": "hi@zot24.com"
@@ -8,43 +8,43 @@
   "plugins": [
     {
       "name": "umbrel-app",
-      "source": "./plugins/umbrel-app",
+      "source": "./skills/umbrel-app",
       "description": "Expert assistant for developing, packaging, testing, and submitting apps for umbrelOS",
       "version": "1.0.0"
     },
     {
       "name": "claude-code-expert",
-      "source": "./plugins/claude-code-expert",
+      "source": "./skills/claude-code-expert",
       "description": "Comprehensive Claude Code and Anthropic ecosystem knowledge. Official patterns for agents, skills, hooks, commands, and MCP.",
       "version": "1.0.0"
     },
     {
       "name": "clawdbot",
-      "source": "./plugins/clawdbot",
+      "source": "./skills/clawdbot",
       "description": "Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams)",
       "version": "1.0.0"
     },
     {
       "name": "agent-browser",
-      "source": "./plugins/agent-browser",
+      "source": "./skills/agent-browser",
       "description": "Expert on agent-browser - Vercel's headless browser automation CLI for AI agents with 50+ commands, snapshots, and multi-session support",
       "version": "1.0.0"
     },
     {
       "name": "chat-sdk",
-      "source": "./plugins/chat-sdk",
+      "source": "./skills/chat-sdk",
       "description": "Expert on Chat SDK - Vercel's open-source template for building production-ready AI chatbots with generative UI, artifacts, and multi-provider support",
       "version": "1.0.0"
     },
     {
       "name": "ai-sdk",
-      "source": "./plugins/ai-sdk",
+      "source": "./skills/ai-sdk",
       "description": "Expert on AI SDK - Vercel's TypeScript toolkit for building AI applications with unified LLM API, streaming, tool calling, and agents",
       "version": "1.0.0"
     },
     {
       "name": "agent-skills",
-      "source": "./plugins/agent-skills",
+      "source": "./skills/agent-skills",
       "description": "Expert at the Agent Skills open format for extending AI agent capabilities - create, validate, and understand SKILL.md files",
       "version": "1.0.0"
     }

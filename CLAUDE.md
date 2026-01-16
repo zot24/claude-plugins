@@ -1,20 +1,20 @@
-# Claude Plugins Development Guide
+# Skills Development Guide
 
-This repository contains Claude Code plugins for various development workflows.
+This repository contains Claude Code skills for various development workflows.
 
 ## Project Structure
 
 ```
-claude-plugins/
+skills/
 ├── .claude-plugin/
 │   └── marketplace.json      # Marketplace manifest
 ├── .github/
 │   ├── scripts/
-│   │   └── sync-plugin.sh    # Generic sync script
+│   │   └── sync-skill.sh     # Generic sync script
 │   └── workflows/
 │       ├── sync-docs.yml     # Scheduled sync workflow
 │       └── release-on-merge.yml
-├── plugins/
+├── skills/
 │   ├── umbrel-app/           # Umbrel app development
 │   ├── claude-code-expert/   # Claude Code knowledge base
 │   ├── clawdbot/             # Clawdbot AI assistant framework
@@ -25,9 +25,9 @@ claude-plugins/
 
 ---
 
-## Plugin Architecture (IMPORTANT)
+## Skill Architecture (IMPORTANT)
 
-All plugins MUST follow the **Progressive Disclosure Pattern** from official Claude Code documentation.
+All skills MUST follow the **Progressive Disclosure Pattern** from official Claude Code documentation.
 
 ### Progressive Disclosure Pattern
 
@@ -39,14 +39,14 @@ This pattern optimizes token usage by loading content on-demand:
 | **Level 2** | SKILL.md content | Skill activation | ~500-1000 tokens |
 | **Level 3** | docs/*.md files | On-demand reference | Only when needed |
 
-### Standardized Plugin Structure
+### Standardized Skill Structure
 
 ```
-plugins/<plugin-name>/
+skills/<skill-name>/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata
+│   └── plugin.json           # Skill metadata
 ├── commands/
-│   └── <plugin-name>.md      # Slash command entry point
+│   └── <skill-name>.md       # Slash command entry point
 ├── skills/<skill-name>/
 │   ├── SKILL.md              # MINIMAL: ~100 lines, summary + references
 │   └── docs/                 # DETAILED: cached upstream documentation
@@ -120,10 +120,10 @@ Each file in `docs/` should:
 - Contain the full content from that source
 - Be synced via the CI workflow
 
-### commands/<plugin-name>.md Template
+### commands/<skill-name>.md Template
 
 ```markdown
-# <Plugin Name> Assistant
+# <Skill Name> Assistant
 
 You are an expert at <domain>.
 
@@ -155,7 +155,7 @@ Brief reference for most common operations.
 
 ```json
 {
-  "name": "<plugin-name>",
+  "name": "<skill-name>",
   "version": "1.0.0",
   "description": "Brief description",
   "sources": [
@@ -189,25 +189,25 @@ Note: The `docs/` folder is NOT gitignored - it contains committed cached docume
 
 ## Documentation Sync
 
-Each plugin syncs documentation from upstream sources.
+Each skill syncs documentation from upstream sources.
 
 ### Sync Commands
 
 ```bash
-# Sync a specific plugin
-.github/scripts/sync-plugin.sh plugins/<plugin-name>
+# Sync a specific skill
+.github/scripts/sync-skill.sh skills/<skill-name>
 
 # Force refresh (ignore cache)
-.github/scripts/sync-plugin.sh plugins/<plugin-name> --force
+.github/scripts/sync-skill.sh skills/<skill-name> --force
 
 # Dry run (check without modifying)
-.github/scripts/sync-plugin.sh plugins/<plugin-name> --dry-run
+.github/scripts/sync-skill.sh skills/<skill-name> --dry-run
 ```
 
-### Plugin Sources
+### Skill Sources
 
-| Plugin | Upstream Source | Sync Type |
-|--------|-----------------|-----------|
+| Skill | Upstream Source | Sync Type |
+|-------|-----------------|-----------|
 | umbrel-app | https://github.com/getumbrel/umbrel-apps/blob/master/README.md | URL-based |
 | claude-code-expert | Multiple sources via registry.json | Registry-based |
 | clawdbot | https://docs.clawd.bot/ | URL-based |
@@ -224,7 +224,7 @@ Each plugin syncs documentation from upstream sources.
 
 ---
 
-## Creating a New Plugin
+## Creating a New Skill
 
 ### Step-by-Step
 
@@ -240,16 +240,16 @@ Each plugin syncs documentation from upstream sources.
    - Save as individual .md files
    - Add source URL comment at top of each
 
-4. **Create command file** at `commands/<plugin-name>.md`
+4. **Create command file** at `commands/<skill-name>.md`
 
 5. **Configure sync.json** with all upstream sources
 
 6. **Register in marketplace**:
    - Add entry to `.claude-plugin/marketplace.json`
-   - Add to `.github/workflows/sync-docs.yml` PLUGINS array
-   - Update CLAUDE.md plugin sources table
+   - Add to `.github/workflows/sync-docs.yml` SKILLS array
+   - Update CLAUDE.md skill sources table
 
-7. **Update README.md** with plugin documentation
+7. **Update README.md** with skill documentation
 
 ### Checklist
 
@@ -265,7 +265,7 @@ Each plugin syncs documentation from upstream sources.
 
 ---
 
-## Working on Plugins
+## Working on Skills
 
 ### Before Starting
 
@@ -282,9 +282,9 @@ Each plugin syncs documentation from upstream sources.
 
 ### After Changes
 
-1. Update plugin README if user-facing behavior changed
+1. Update skill README if user-facing behavior changed
 2. Bump version in sync.json if significant
-3. Commit with conventional format: `feat(<plugin>): description`
+3. Commit with conventional format: `feat(<skill>): description`
 
 ---
 
@@ -293,10 +293,10 @@ Each plugin syncs documentation from upstream sources.
 ### Commit Messages
 
 ```
-feat(<plugin>): add new feature
-fix(<plugin>): fix bug
-docs(<plugin>): update documentation
-chore(<plugin>): maintenance task
+feat(<skill>): add new feature
+fix(<skill>): fix bug
+docs(<skill>): update documentation
+chore(<skill>): maintenance task
 ```
 
 ### Version Bumps
@@ -310,7 +310,7 @@ chore(<plugin>): maintenance task
 PRs should have labels:
 - `documentation` - Doc updates
 - `automated` - CI-generated PRs
-- `<plugin-name>` - Plugin-specific label
+- `<skill-name>` - Skill-specific label
 
 ---
 
@@ -319,21 +319,21 @@ PRs should have labels:
 ### Sync Workflow
 
 - Runs bi-weekly (1st and 15th of month)
-- Syncs all plugins in PLUGINS array
+- Syncs all skills in SKILLS array
 - Creates PR if changes detected
 - Auto-merges with squash
 
 ### Manual Trigger
 
-GitHub Actions > Sync Plugin Documentation > Run workflow
+GitHub Actions > Sync Skill Documentation > Run workflow
 - Enable `force` to ignore freshness check
 - Enable `dry_run` to check without modifying
 
-### Adding New Plugin to CI
+### Adding New Skill to CI
 
-1. Add plugin name to PLUGINS array in `.github/workflows/sync-docs.yml`:
+1. Add skill name to SKILLS array in `.github/workflows/sync-docs.yml`:
    ```yaml
-   PLUGINS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "<new-plugin>")
+   SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "<new-skill>")
    ```
 
 2. Ensure sync.json is properly configured with all sources
