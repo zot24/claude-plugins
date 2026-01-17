@@ -1,2 +1,2 @@
-# Cache directory contains fetched content - populated locally via /claude-docs-sync
-cache/
+# Sync cache (temporary comparison files)
+.cache/

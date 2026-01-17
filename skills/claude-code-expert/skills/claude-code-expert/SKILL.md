@@ -1,25 +1,10 @@
-# Claude Code Expert
-
 ---
 name: claude-code-expert
-description: Claude Code and Anthropic ecosystem knowledge. Provides official patterns for creating agents, skills, hooks, and commands. Auto-invokes when creating or validating Claude Code artifacts.
-model: sonnet
-allowed-tools: Read, Grep, Glob
-auto_invoke: true
-triggers:
-  - "create new agent"
-  - "create new skill"
-  - "create new hook"
-  - "create new command"
-  - "validate agent"
-  - "validate skill"
-  - "validate hook"
-  - "validate command"
-  - "best practices"
-  - "Claude Code features"
-  - "MCP integration"
-  - "tool usage patterns"
+description: Claude Code and Anthropic ecosystem expert. Provides official patterns for creating agents, skills, hooks, and commands. Use when creating or validating Claude Code artifacts, asking about Claude Code features, MCP integration, or tool usage patterns.
+allowed-tools: Read, Grep, Glob, WebFetch
 ---
+
+# Claude Code Expert
 
 ## Purpose
 
@@ -28,26 +13,26 @@ Provides authoritative knowledge for Claude Code development, ensuring all artif
 ## Knowledge Base
 
 ### Patterns (Creation Guides)
-- `official/patterns/agent-creation.md` - Agent creation guide
-- `official/patterns/skill-creation.md` - Skill creation guide
-- `official/patterns/hook-creation.md` - Hook creation guide
-- `official/patterns/hook-advanced.md` - Advanced hook patterns (v2.1.0+)
-- `official/patterns/command-creation.md` - Command creation guide
+- `docs/patterns/agent-creation.md` - Agent creation guide
+- `docs/patterns/skill-creation.md` - Skill creation guide
+- `docs/patterns/hook-creation.md` - Hook creation guide
+- `docs/patterns/hook-advanced.md` - Advanced hook patterns (v2.1.0+)
+- `docs/patterns/command-creation.md` - Command creation guide
 
 ### Features (Capability Guides)
-- `official/features/tool-usage.md` - Read, Write, Edit, Grep, Glob, Bash
-- `official/features/mcp-integration.md` - MCP servers and integration
-- `official/features/code-execution.md` - Code execution with MCP
+- `docs/features/tool-usage.md` - Read, Write, Edit, Grep, Glob, Bash
+- `docs/features/mcp-integration.md` - MCP servers and integration
+- `docs/features/code-execution.md` - Code execution with MCP
 
 ### Validation (Quality Checklists)
-- `official/validation/agent-checklist.md` - Agent quality checks
-- `official/validation/skill-checklist.md` - Skill quality checks
-- `official/validation/hook-checklist.md` - Hook quality checks
-- `official/validation/command-checklist.md` - Command quality checks
+- `docs/validation/agent-checklist.md` - Agent quality checks
+- `docs/validation/skill-checklist.md` - Skill quality checks
+- `docs/validation/hook-checklist.md` - Hook quality checks
+- `docs/validation/command-checklist.md` - Command quality checks
 
 ### Ecosystem (Version Info)
-- `official/ecosystem/claude-versions.md` - Model versions
-- `official/ecosystem/model-capabilities.md` - Capability comparison
+- `docs/ecosystem/claude-versions.md` - Model versions
+- `docs/ecosystem/model-capabilities.md` - Capability comparison
 
 ## Workflow
 
@@ -61,15 +46,15 @@ Provides authoritative knowledge for Claude Code development, ensuring all artif
 ### Creating an Agent
 ```
 User: "Create an agent for code security reviews"
-→ Load official/patterns/agent-creation.md
+→ Load docs/patterns/agent-creation.md
 → Provide structure, frontmatter, system prompt guidance
-→ After creation, validate against official/validation/agent-checklist.md
+→ After creation, validate against docs/validation/agent-checklist.md
 ```
 
 ### Validating a Hook
 ```
 User: "Validate my authentication hook"
-→ Load official/validation/hook-checklist.md
+→ Load docs/validation/hook-checklist.md
 → Review against all checklist items
 → Report issues with recommendations
 ```

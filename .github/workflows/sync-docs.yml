@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq curl
+          sudo apt-get install -y jq curl pandoc
 
       - name: Setup Git
         run: |
@@ -52,13 +52,36 @@ jobs:
 
           SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills")
           CHANGED_SKILLS=""
+          FAILED_SKILLS=""
           ALL_CHANGES=""
+          SYNC_REPORTS=""
 
           for SKILL in "${SKILLS[@]}"; do
             echo "=== Syncing $SKILL ==="
 
-            OUTPUT=$(.github/scripts/sync-skill.sh "skills/$SKILL" $FORCE_FLAG $DRY_RUN_FLAG 2>&1) || true
+            # Run sync and capture exit code (don't fail workflow on sync failure)
+            set +e
+            OUTPUT=$(.github/scripts/sync-skill.sh "skills/$SKILL" $FORCE_FLAG $DRY_RUN_FLAG 2>&1)
+            EXIT_CODE=$?
+            set -e
+
             echo "$OUTPUT"
+
+            # Check for failures reported by the script
+            if echo "$OUTPUT" | grep -q "has_failures=true"; then
+              echo "::warning::Some sources failed to sync for $SKILL"
+              FAILED_SKILLS="$FAILED_SKILLS $SKILL"
+            fi
+
+            # Collect sync reports
+            if [ -f "skills/$SKILL/sync-report.txt" ]; then
+              SYNC_REPORTS="$SYNC_REPORTS
+          #### $SKILL
+          \`\`\`
+          $(cat "skills/$SKILL/sync-report.txt")
+          \`\`\`
+          "
+            fi
 
             # Check if this skill had changes
             if git diff --quiet "skills/$SKILL/"; then
@@ -78,7 +101,9 @@ jobs:
 
           # Trim whitespace
           CHANGED_SKILLS=$(echo "$CHANGED_SKILLS" | xargs)
+          FAILED_SKILLS=$(echo "$FAILED_SKILLS" | xargs)
 
+          # Set outputs
           if [ -z "$CHANGED_SKILLS" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No changes detected across any skills"
@@ -91,6 +116,40 @@ jobs:
             echo "$ALL_CHANGES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
+
+          if [ -n "$FAILED_SKILLS" ]; then
+            echo "has_failures=true" >> $GITHUB_OUTPUT
+            echo "failed_skills=$FAILED_SKILLS" >> $GITHUB_OUTPUT
+            echo "::warning::Failed skills: $FAILED_SKILLS"
+          fi
+
+          # Save sync reports
+          echo "sync_reports<<EOF" >> $GITHUB_OUTPUT
+          echo "$SYNC_REPORTS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Generate job summary
+        if: always()
+        run: |
+          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.sync.outputs.has_changes }}" == "true" ]; then
+            echo "### Changed Skills" >> $GITHUB_STEP_SUMMARY
+            echo "**${{ steps.sync.outputs.changed_skills }}**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes detected." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ steps.sync.outputs.has_failures }}" == "true" ]; then
+            echo "### ⚠️ Failed Skills" >> $GITHUB_STEP_SUMMARY
+            echo "**${{ steps.sync.outputs.failed_skills }}**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "### Sync Reports" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.sync.outputs.sync_reports }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Update CHANGELOG
         if: steps.sync.outputs.has_changes == 'true' && inputs.dry_run != true
@@ -151,7 +210,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CHANGED="${{ steps.sync.outputs.changed_skills }}"
+          FAILED="${{ steps.sync.outputs.failed_skills }}"
           DATE=$(date +%Y-%m-%d)
+
+          # Build failure section if needed
+          FAILURE_SECTION=""
+          if [ -n "$FAILED" ]; then
+            FAILURE_SECTION="### ⚠️ Failed Sources
+
+          Some sources failed to sync for: **$FAILED**
+
+          See the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+
+          "
+          fi
 
           gh pr create \
             --title "docs: sync documentation ($DATE)" \
@@ -164,7 +236,7 @@ jobs:
 
           ${{ steps.sync.outputs.changes }}
 
-          ### Details
+          ${FAILURE_SECTION}### Details
 
           - **Triggered by**: ${{ github.event_name }}
           - **Run**: [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})

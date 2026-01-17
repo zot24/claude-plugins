@@ -20,33 +20,36 @@ The skill auto-activates on keywords like:
 
 ```
 claude-code-expert/
-├── skills/claude-code-expert/SKILL.md   # Main skill definition
-├── official/                            # Bundled knowledge
-│   ├── patterns/                        # Creation guides
-│   │   ├── agent-creation.md
-│   │   ├── skill-creation.md
-│   │   ├── hook-creation.md
-│   │   ├── hook-advanced.md
-│   │   └── command-creation.md
-│   ├── features/                        # Capability guides
-│   │   ├── tool-usage.md
-│   │   ├── mcp-integration.md
-│   │   └── code-execution.md
-│   ├── validation/                      # Quality checklists
-│   │   ├── agent-checklist.md
-│   │   ├── skill-checklist.md
-│   │   ├── hook-checklist.md
-│   │   └── command-checklist.md
-│   └── ecosystem/                       # Version info
-│       ├── claude-versions.md
-│       └── model-capabilities.md
+├── skills/claude-code-expert/
+│   ├── SKILL.md                         # Main skill definition
+│   └── docs/                            # Bundled knowledge
+│       ├── patterns/                    # Creation guides
+│       │   ├── agent-creation.md
+│       │   ├── skill-creation.md
+│       │   ├── hook-creation.md
+│       │   ├── hook-advanced.md
+│       │   └── command-creation.md
+│       ├── features/                    # Capability guides
+│       │   ├── tool-usage.md
+│       │   ├── mcp-integration.md
+│       │   └── code-execution.md
+│       ├── validation/                  # Quality checklists
+│       │   ├── agent-checklist.md
+│       │   ├── skill-checklist.md
+│       │   ├── hook-checklist.md
+│       │   └── command-checklist.md
+│       └── ecosystem/                   # Version info
+│           ├── claude-versions.md
+│           └── model-capabilities.md
+├── commands/
+│   └── claude-code-expert.md            # Slash command entry point
 ├── sources/
 │   └── registry.json                    # External source definitions
 ├── scripts/
 │   ├── sync-sources.sh                  # Sync all sources
 │   ├── fetch-source.sh                  # Fetch single source
 │   └── check-updates.sh                 # Check freshness
-└── cache/                               # Synced external docs (gitignored)
+└── .cache/                              # Synced external docs (gitignored)
 ```
 
 ## Documentation Sources
@@ -84,7 +87,7 @@ The skill syncs from these official sources (defined in `sources/registry.json`)
 ```
 > Create an agent for PostgreSQL query optimization
 
-Skill loads official/patterns/agent-creation.md and provides:
+Skill loads docs/patterns/agent-creation.md and provides:
 - File structure and location
 - Required frontmatter fields
 - System prompt guidance
@@ -95,7 +98,7 @@ Skill loads official/patterns/agent-creation.md and provides:
 ```
 > Validate my performance monitoring skill
 
-Skill loads official/validation/skill-checklist.md and checks:
+Skill loads docs/validation/skill-checklist.md and checks:
 - Directory structure
 - SKILL.md frontmatter
 - State management
@@ -106,7 +109,7 @@ Skill loads official/validation/skill-checklist.md and checks:
 ```
 > What are the latest MCP integration patterns?
 
-Skill loads official/features/mcp-integration.md with:
+Skill loads docs/features/mcp-integration.md with:
 - Current MCP capabilities
 - Integration methods
 - Authentication patterns

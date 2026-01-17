@@ -22,25 +22,28 @@ Parse the arguments to determine the action:
 ## Instructions
 
 1. Read the skill at `skills/claude-code-expert/SKILL.md` for complete guidance
-2. Load relevant pattern files from `official/patterns/` for creation tasks
-3. Load validation checklists from `official/validation/` for validation tasks
-4. Load feature guides from `official/features/` for capability questions
+2. Read detailed docs in `skills/claude-code-expert/docs/` for specific topics
+3. For **patterns**: Reference `docs/patterns/` for creation guides
+4. For **validation**: Reference `docs/validation/` for quality checklists
+5. For **features**: Reference `docs/features/` for capability guides
+6. For **sync**: Fetch latest docs and update if needed
+7. For **diff**: Compare current docs against upstream
 
 ## Quick Reference
 
 ### Creating Artifacts
-- Agents: `official/patterns/agent-creation.md`
-- Skills: `official/patterns/skill-creation.md`
-- Hooks: `official/patterns/hook-creation.md` + `hook-advanced.md`
-- Commands: `official/patterns/command-creation.md`
+- Agents: `docs/patterns/agent-creation.md`
+- Skills: `docs/patterns/skill-creation.md`
+- Hooks: `docs/patterns/hook-creation.md` + `hook-advanced.md`
+- Commands: `docs/patterns/command-creation.md`
 
 ### Validating
-- All checklists in `official/validation/`
+- All checklists in `docs/validation/`
 
 ### Features
-- Tools: `official/features/tool-usage.md`
-- MCP: `official/features/mcp-integration.md`
-- Code Execution: `official/features/code-execution.md`
+- Tools: `docs/features/tool-usage.md`
+- MCP: `docs/features/mcp-integration.md`
+- Code Execution: `docs/features/code-execution.md`
 
 ### Documentation Sync
 Run scripts in `scripts/` directory:

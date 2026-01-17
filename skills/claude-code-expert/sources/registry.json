@@ -18,7 +18,7 @@
           "paths": {
             "CHANGELOG.md": {
               "description": "Version changelog - critical for tracking new features",
-              "localCache": "cache/github/claude-code/CHANGELOG.md",
+              "localCache": ".cache/github/claude-code/CHANGELOG.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -31,7 +31,7 @@
           "paths": {
             "README.md": {
               "description": "Skills overview and standards",
-              "localCache": "cache/github/skills/README.md",
+              "localCache": ".cache/github/skills/README.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -44,7 +44,7 @@
           "paths": {
             "README.md": {
               "description": "Cookbooks overview and examples",
-              "localCache": "cache/github/claude-cookbooks/README.md",
+              "localCache": ".cache/github/claude-cookbooks/README.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -57,7 +57,7 @@
           "paths": {
             "README.md": {
               "description": "SDK usage",
-              "localCache": "cache/github/anthropic-sdk-python/README.md",
+              "localCache": ".cache/github/anthropic-sdk-python/README.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -77,70 +77,70 @@
         "overview.md": {
           "description": "Claude Code overview",
           "category": "core",
-          "localCache": "cache/docs/code-claude-com/overview.md",
+          "localCache": ".cache/docs/code-claude-com/overview.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "hooks.md": {
           "description": "Hooks reference (replaces hooks-guide)",
           "category": "hooks",
-          "localCache": "cache/docs/code-claude-com/hooks.md",
+          "localCache": ".cache/docs/code-claude-com/hooks.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "sub-agents.md": {
           "description": "Subagents/agents documentation",
           "category": "agents",
-          "localCache": "cache/docs/code-claude-com/sub-agents.md",
+          "localCache": ".cache/docs/code-claude-com/sub-agents.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "skills.md": {
           "description": "Skills documentation",
           "category": "skills",
-          "localCache": "cache/docs/code-claude-com/skills.md",
+          "localCache": ".cache/docs/code-claude-com/skills.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "slash-commands.md": {
           "description": "Slash commands documentation",
           "category": "commands",
-          "localCache": "cache/docs/code-claude-com/slash-commands.md",
+          "localCache": ".cache/docs/code-claude-com/slash-commands.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "mcp.md": {
           "description": "MCP integration",
           "category": "mcp",
-          "localCache": "cache/docs/code-claude-com/mcp.md",
+          "localCache": ".cache/docs/code-claude-com/mcp.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "common-workflows.md": {
           "description": "Common workflows and patterns",
           "category": "workflows",
-          "localCache": "cache/docs/code-claude-com/common-workflows.md",
+          "localCache": ".cache/docs/code-claude-com/common-workflows.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "iam.md": {
           "description": "Identity and Access Management - permissions system",
           "category": "security",
-          "localCache": "cache/docs/code-claude-com/iam.md",
+          "localCache": ".cache/docs/code-claude-com/iam.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "settings.md": {
           "description": "Settings including permission settings",
           "category": "configuration",
-          "localCache": "cache/docs/code-claude-com/settings.md",
+          "localCache": ".cache/docs/code-claude-com/settings.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "memory.md": {
           "description": "Memory and CLAUDE.md",
           "category": "core",
-          "localCache": "cache/docs/code-claude-com/memory.md",
+          "localCache": ".cache/docs/code-claude-com/memory.md",
           "lastFetched": null,
           "status": "not_cached"
         }
@@ -158,19 +158,19 @@
           "pages": {
             "sdk": {
               "description": "Agent SDK overview",
-              "localCache": "cache/docs/anthropic/claude-code/sdk.md",
+              "localCache": ".cache/docs/anthropic/claude-code/sdk.md",
               "lastFetched": null,
               "status": "not_cached"
             },
             "sdk/sdk-python": {
               "description": "Python SDK reference",
-              "localCache": "cache/docs/anthropic/claude-code/sdk-python.md",
+              "localCache": ".cache/docs/anthropic/claude-code/sdk-python.md",
               "lastFetched": null,
               "status": "not_cached"
             },
             "sub-agents": {
               "description": "Subagents reference",
-              "localCache": "cache/docs/anthropic/claude-code/sub-agents.md",
+              "localCache": ".cache/docs/anthropic/claude-code/sub-agents.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -181,19 +181,19 @@
           "pages": {
             "claude-code/overview": {
               "description": "Claude Code in agents context",
-              "localCache": "cache/docs/anthropic/agents-and-tools/claude-code-overview.md",
+              "localCache": ".cache/docs/anthropic/agents-and-tools/claude-code-overview.md",
               "lastFetched": null,
               "status": "not_cached"
             },
             "tool-use": {
               "description": "Tool use patterns",
-              "localCache": "cache/docs/anthropic/agents-and-tools/tool-use.md",
+              "localCache": ".cache/docs/anthropic/agents-and-tools/tool-use.md",
               "lastFetched": null,
               "status": "not_cached"
             },
             "mcp": {
               "description": "MCP documentation",
-              "localCache": "cache/docs/anthropic/agents-and-tools/mcp.md",
+              "localCache": ".cache/docs/anthropic/agents-and-tools/mcp.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -204,7 +204,7 @@
           "pages": {
             "claude-code": {
               "description": "Claude Code changelog",
-              "localCache": "cache/docs/anthropic/release-notes/claude-code.md",
+              "localCache": ".cache/docs/anthropic/release-notes/claude-code.md",
               "lastFetched": null,
               "status": "not_cached",
               "priority": 1,
@@ -227,7 +227,7 @@
           "title": "Claude Code: Best practices for agentic coding",
           "publishedDate": "2025-02-24",
           "category": "best-practices",
-          "localCache": "cache/blog/claude-code-best-practices.md",
+          "localCache": ".cache/blog/claude-code-best-practices.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 1
@@ -237,7 +237,7 @@
           "title": "Building agents with the Claude Agent SDK",
           "publishedDate": "2025-09-29",
           "category": "sdk",
-          "localCache": "cache/blog/building-agents-sdk.md",
+          "localCache": ".cache/blog/building-agents-sdk.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 1
@@ -247,7 +247,7 @@
           "title": "Equipping agents for the real world with Agent Skills",
           "publishedDate": "2025-12-18",
           "category": "skills",
-          "localCache": "cache/blog/agent-skills.md",
+          "localCache": ".cache/blog/agent-skills.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 1
@@ -257,7 +257,7 @@
           "title": "Making Claude Code more secure and autonomous",
           "publishedDate": "2025-06-15",
           "category": "security",
-          "localCache": "cache/blog/claude-code-sandboxing.md",
+          "localCache": ".cache/blog/claude-code-sandboxing.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 1
@@ -267,7 +267,7 @@
           "title": "The think tool: Enabling Claude to stop and think",
           "publishedDate": "2025-05-20",
           "category": "tools",
-          "localCache": "cache/blog/think-tool.md",
+          "localCache": ".cache/blog/think-tool.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 2
@@ -277,7 +277,7 @@
           "title": "Code execution with MCP: building more efficient AI agents",
           "publishedDate": "2024-11-04",
           "category": "mcp",
-          "localCache": "cache/blog/code-execution-mcp.md",
+          "localCache": ".cache/blog/code-execution-mcp.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 1
@@ -287,7 +287,7 @@
           "title": "Introducing advanced tool use on the Claude Developer Platform",
           "publishedDate": "2024-10-15",
           "category": "tools",
-          "localCache": "cache/blog/advanced-tool-use.md",
+          "localCache": ".cache/blog/advanced-tool-use.md",
           "lastFetched": null,
           "status": "not_cached",
           "priority": 2
@@ -306,7 +306,7 @@
           "title": "Introducing Agent Skills",
           "publishedDate": "2025-12-18",
           "category": "announcements",
-          "localCache": "cache/news/skills-announcement.md",
+          "localCache": ".cache/news/skills-announcement.md",
           "lastFetched": null,
           "status": "not_cached"
         },
@@ -315,7 +315,7 @@
           "title": "Claude Opus 4.5",
           "publishedDate": "2025-02-24",
           "category": "models",
-          "localCache": "cache/news/opus-4-5.md",
+          "localCache": ".cache/news/opus-4-5.md",
           "lastFetched": null,
           "status": "not_cached"
         }
@@ -341,28 +341,28 @@
         "home": {
           "url": "https://agentskills.io/home",
           "description": "Overview and introduction to Agent Skills",
-          "localCache": "cache/agentskills/home.md",
+          "localCache": ".cache/agentskills/home.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "what-are-skills": {
           "url": "https://agentskills.io/what-are-skills",
           "description": "Educational content about skills",
-          "localCache": "cache/agentskills/what-are-skills.md",
+          "localCache": ".cache/agentskills/what-are-skills.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "specification": {
           "url": "https://agentskills.io/specification",
           "description": "Complete SKILL.md format specification",
-          "localCache": "cache/agentskills/specification.md",
+          "localCache": ".cache/agentskills/specification.md",
           "lastFetched": null,
           "status": "not_cached"
         },
         "integrate-skills": {
           "url": "https://agentskills.io/integrate-skills",
           "description": "Implementation guide for adding skills support",
-          "localCache": "cache/agentskills/integrate-skills.md",
+          "localCache": ".cache/agentskills/integrate-skills.md",
           "lastFetched": null,
           "status": "not_cached"
         }
@@ -382,7 +382,7 @@
           "paths": {
             "README.md": {
               "description": "Main repository README",
-              "localCache": "cache/github/agentskills/README.md",
+              "localCache": ".cache/github/agentskills/README.md",
               "lastFetched": null,
               "status": "not_cached"
             }
@@ -400,7 +400,7 @@
         "url": "https://github.com/hesreallyhim/awesome-claude-code",
         "description": "Curated list of commands, files, and workflows",
         "type": "curated-list",
-        "localCache": "cache/community/awesome-claude-code/",
+        "localCache": ".cache/community/awesome-claude-code/",
         "lastFetched": null,
         "status": "not_cached"
       },
@@ -408,7 +408,7 @@
         "url": "https://github.com/disler/claude-code-hooks-mastery",
         "description": "Hook patterns and examples",
         "type": "examples",
-        "localCache": "cache/community/hooks-mastery/",
+        "localCache": ".cache/community/hooks-mastery/",
         "lastFetched": null,
         "status": "not_cached"
       },
@@ -416,7 +416,7 @@
         "url": "https://gist.github.com/alexfazio/653c5164d726987569ee8229a19f451f",
         "description": "v2.1.0+ hook features documentation",
         "type": "gist",
-        "localCache": "official/patterns/hook-advanced.md",
+        "localCache": "docs/patterns/hook-advanced.md",
         "lastFetched": "2026-01-09T00:00:00Z",
         "status": "cached"
       }
