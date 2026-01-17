@@ -38,6 +38,25 @@ Add to your project's `.claude/settings.json`:
 
 ## Commands
 
+| Command | Description |
+|---------|-------------|
+| `/clawdbot setup` | Guide through installation and setup |
+| `/clawdbot install` | Installation methods (Docker, npm, source) |
+| `/clawdbot cli` | CLI command reference |
+| `/clawdbot concepts` | Core architecture concepts |
+| `/clawdbot gateway` | Gateway configuration and troubleshooting |
+| `/clawdbot channels` | All messaging channel configurations |
+| `/clawdbot channel <name>` | Configure specific channel |
+| `/clawdbot providers` | LLM provider setup |
+| `/clawdbot tools` | Tools and skills system |
+| `/clawdbot automation` | Webhooks, cron, polling |
+| `/clawdbot web` | Web interfaces (webchat, dashboard, TUI) |
+| `/clawdbot nodes` | Mobile/desktop nodes, media capabilities |
+| `/clawdbot platforms` | Platform-specific guides |
+| `/clawdbot diagnose` | Troubleshoot issues |
+| `/clawdbot sync` | Update docs from upstream |
+| `/clawdbot help` | Show available commands |
+
 ### `/clawdbot setup`
 Guide through installation and initial configuration:
 - Check prerequisites (Node.js 22+)
@@ -269,10 +288,22 @@ clawdbot/
 ├── .claude-plugin/
 │   └── plugin.json       # Skill manifest
 ├── commands/
-│   └── clawdbot.md       # Slash command definition
+│   └── clawdbot.md       # Slash command router
 ├── skills/
 │   └── clawdbot/
-│       └── SKILL.md      # Comprehensive knowledge base
+│       ├── SKILL.md      # Overview (~100 lines)
+│       └── docs/         # Detailed documentation
+│           ├── install.md
+│           ├── cli.md
+│           ├── concepts.md
+│           ├── gateway.md
+│           ├── channels.md
+│           ├── providers.md
+│           ├── tools.md
+│           ├── automation.md
+│           ├── web.md
+│           ├── nodes.md
+│           └── platforms.md
 ├── sync.json             # Sync configuration for CI
 ├── .gitignore
 └── README.md

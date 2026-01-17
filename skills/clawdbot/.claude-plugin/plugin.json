@@ -1,7 +1,7 @@
 {
   "name": "clawdbot",
   "description": "Expert on Clawdbot - AI assistant framework connecting Claude/LLMs to messaging platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams)",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "author": {
     "name": "zot24"
   },
@@ -18,6 +18,15 @@
     "signal",
     "imessage",
     "teams",
-    "messaging"
+    "messaging",
+    "gateway",
+    "channels",
+    "automation",
+    "webhooks",
+    "cron",
+    "docker",
+    "llm",
+    "claude",
+    "openai"
   ]
 }

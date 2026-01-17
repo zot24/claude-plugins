@@ -1,196 +1,76 @@
 {
   "name": "clawdbot",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Clawdbot AI assistant framework - complete documentation",
-  "sync_script": "sync.sh",
   "cache_dir": ".cache",
   "freshness_days": 14,
-  "skills": {
-    "clawdbot": {
-      "description": "Clawdbot overview and getting started",
-      "target": "skills/clawdbot/SKILL.md",
-      "sources": [
-        "/start/getting-started",
-        "/start/wizard",
-        "/start/faq"
-      ]
+  "base_url": "https://docs.clawd.bot",
+  "sources": [
+    {
+      "url": "https://docs.clawd.bot/start/getting-started",
+      "target": "skills/clawdbot/docs/install.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-install": {
-      "description": "Installation methods: Docker, npm, source, Ansible, Nix",
-      "target": "skills/clawdbot-install/SKILL.md",
-      "sources": [
-        "/install/installer",
-        "/install/npm",
-        "/install/source",
-        "/install/docker",
-        "/install/ansible",
-        "/install/nix",
-        "/install/bun",
-        "/updates/updating",
-        "/updates/rollback"
-      ]
+    {
+      "url": "https://docs.clawd.bot/cli/message",
+      "target": "skills/clawdbot/docs/cli.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-cli": {
-      "description": "CLI commands: message, gateway, updates, sandbox",
-      "target": "skills/clawdbot-cli/SKILL.md",
-      "sources": [
-        "/cli/message",
-        "/cli/gateway",
-        "/cli/updates",
-        "/cli/sandbox"
-      ]
+    {
+      "url": "https://docs.clawd.bot/concepts/architecture",
+      "target": "skills/clawdbot/docs/concepts.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-concepts": {
-      "description": "Core concepts: architecture, agent runtime, memory, sessions",
-      "target": "skills/clawdbot-concepts/SKILL.md",
-      "sources": [
-        "/concepts/architecture",
-        "/concepts/agent-runtime",
-        "/concepts/loops",
-        "/concepts/system-prompt",
-        "/concepts/tokens",
-        "/concepts/oauth",
-        "/concepts/workspaces",
-        "/concepts/memory",
-        "/concepts/multi-agent",
-        "/concepts/sessions",
-        "/concepts/compaction",
-        "/concepts/presence",
-        "/concepts/channel-routing",
-        "/concepts/messaging",
-        "/concepts/streaming",
-        "/concepts/groups",
-        "/concepts/typing",
-        "/concepts/queue",
-        "/concepts/retry",
-        "/concepts/providers",
-        "/concepts/failover",
-        "/concepts/usage",
-        "/concepts/timezone",
-        "/concepts/typebox"
-      ]
+    {
+      "url": "https://docs.clawd.bot/gateway/protocol",
+      "target": "skills/clawdbot/docs/gateway.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-gateway": {
-      "description": "Gateway: protocol, config, auth, health, security",
-      "target": "skills/clawdbot-gateway/SKILL.md",
-      "sources": [
-        "/gateway/protocol",
-        "/gateway/bridge",
-        "/gateway/pairing",
-        "/gateway/locking",
-        "/gateway/env",
-        "/gateway/config",
-        "/gateway/auth",
-        "/gateway/openai-api",
-        "/gateway/background",
-        "/gateway/health",
-        "/gateway/heartbeat",
-        "/gateway/doctor",
-        "/gateway/logging",
-        "/gateway/security",
-        "/gateway/sandbox",
-        "/gateway/troubleshooting",
-        "/gateway/debugging",
-        "/gateway/remote",
-        "/gateway/discovery",
-        "/gateway/bonjour",
-        "/gateway/tailscale"
-      ]
+    {
+      "url": "https://docs.clawd.bot/channels/whatsapp",
+      "target": "skills/clawdbot/docs/channels.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-channels": {
-      "description": "Messaging channels: WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams",
-      "target": "skills/clawdbot-channels/SKILL.md",
-      "sources": [
-        "/channels/whatsapp",
-        "/channels/telegram",
-        "/channels/grammy",
-        "/channels/discord",
-        "/channels/slack",
-        "/channels/signal",
-        "/channels/imessage",
-        "/channels/msteams",
-        "/channels/broadcast",
-        "/channels/troubleshooting",
-        "/channels/location"
-      ]
+    {
+      "url": "https://docs.clawd.bot/providers/overview",
+      "target": "skills/clawdbot/docs/providers.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-providers": {
-      "description": "Model providers: OpenAI, Anthropic, Moonshot, MiniMax, OpenRouter",
-      "target": "skills/clawdbot-providers/SKILL.md",
-      "sources": [
-        "/providers/overview",
-        "/providers/openai",
-        "/providers/anthropic",
-        "/providers/moonshot",
-        "/providers/minimax",
-        "/providers/openrouter",
-        "/providers/opencode",
-        "/providers/glm",
-        "/providers/zai"
-      ]
+    {
+      "url": "https://docs.clawd.bot/tools/skills",
+      "target": "skills/clawdbot/docs/tools.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-tools": {
-      "description": "Tools & skills: exec, browser, slash-commands, subagents, ClawdHub",
-      "target": "skills/clawdbot-tools/SKILL.md",
-      "sources": [
-        "/tools/skills",
-        "/tools/exec",
-        "/tools/patch",
-        "/tools/elevated",
-        "/tools/browser",
-        "/tools/slash-commands",
-        "/tools/thinking",
-        "/tools/agent-send",
-        "/tools/subagents",
-        "/tools/reactions",
-        "/tools/clawdhub"
-      ]
+    {
+      "url": "https://docs.clawd.bot/automation/webhooks",
+      "target": "skills/clawdbot/docs/automation.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-automation": {
-      "description": "Automation: webhooks, Gmail, cron jobs, polling",
-      "target": "skills/clawdbot-automation/SKILL.md",
-      "sources": [
-        "/automation/auth-monitoring",
-        "/automation/webhooks",
-        "/automation/gmail",
-        "/automation/cron",
-        "/automation/polling"
-      ]
+    {
+      "url": "https://docs.clawd.bot/web/webchat",
+      "target": "skills/clawdbot/docs/web.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-web": {
-      "description": "Web interfaces: control panel, dashboard, webchat, TUI",
-      "target": "skills/clawdbot-web/SKILL.md",
-      "sources": [
-        "/web/control",
-        "/web/dashboard",
-        "/web/webchat",
-        "/web/tui"
-      ]
+    {
+      "url": "https://docs.clawd.bot/nodes/camera",
+      "target": "skills/clawdbot/docs/nodes.md",
+      "type": "extract-content",
+      "freshness_days": 14
     },
-    "clawdbot-nodes": {
-      "description": "Nodes & media: camera, images, audio, location, voice",
-      "target": "skills/clawdbot-nodes/SKILL.md",
-      "sources": [
-        "/nodes/camera",
-        "/nodes/images",
-        "/nodes/audio",
-        "/nodes/location",
-        "/nodes/voice-wake",
-        "/nodes/talk"
-      ]
-    },
-    "clawdbot-platforms": {
-      "description": "Platforms: macOS, iOS, Android, Windows, Linux, VPS",
-      "target": "skills/clawdbot-platforms/SKILL.md",
-      "sources": [
-        "/platforms/macos",
-        "/platforms/ios",
-        "/platforms/android",
-        "/platforms/windows",
-        "/platforms/linux",
-        "/platforms/hetzner",
-        "/platforms/exe-dev"
-      ]
+    {
+      "url": "https://docs.clawd.bot/platforms/macos",
+      "target": "skills/clawdbot/docs/platforms.md",
+      "type": "extract-content",
+      "freshness_days": 14
     }
-  }
+  ]
 }
