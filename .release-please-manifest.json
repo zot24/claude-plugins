@@ -1,6 +1,6 @@
 {
   "skills/umbrel-app": "2.0.0",
   "skills/claude-code-expert": "2.0.3",
-  "skills/clawdbot": "2.1.0",
+  "skills/clawdbot": "3.0.0",
   "skills/agent-browser": "2.0.0"
 }
