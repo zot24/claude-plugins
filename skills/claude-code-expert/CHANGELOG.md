@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/zot24/skills/compare/claude-code-expert-v2.0.1...claude-code-expert-v2.0.2) (2026-01-18)
+
+
+### Documentation
+
+* **claude-code-expert:** sync skill-creation.md with official docs ([0e837ee](https://github.com/zot24/skills/commit/0e837ee13525166b0c29262462827d5a3be7537c))
+
 ## [2.0.1](https://github.com/zot24/skills/compare/claude-code-expert-v2.0.0...claude-code-expert-v2.0.1) (2026-01-17)
 
 
