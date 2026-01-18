@@ -2,9 +2,9 @@
 
 > **Source**: Official Claude Code Documentation + Anthropic Engineering Blog
 > **Source URLs**:
-> - https://code.claude.com/docs/en/skills.md
+> - https://code.claude.com/docs/en/skills
 > - https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
-> **Last Updated**: 2025-01-15
+> **Last Updated**: 2025-01-17
 
 ## What Are Agent Skills?
 
@@ -16,16 +16,31 @@ Agent Skills are **modular packages** that extend Claude's capabilities through 
 
 ### Directory Locations (Priority Order)
 
-1. **Personal Skills**: `~/.claude/skills/skill-name/`
+1. **Enterprise/Managed Skills**: Organization-wide (highest priority)
+   - Deployed by administrators through managed settings
+   - Available organization-wide
+
+2. **Personal Skills**: `~/.claude/skills/skill-name/`
    - Available across all projects
    - Individual workflows and experimental capabilities
 
-2. **Project Skills**: `.claude/skills/skill-name/`
+3. **Project Skills**: `.claude/skills/skill-name/`
    - Shared with team via git
    - Team conventions and project-specific expertise
 
-3. **Plugin Skills**: Bundled within Claude Code plugins
+4. **Plugin Skills**: Bundled within Claude Code plugins
    - Automatically available upon plugin installation
+
+If two Skills have the same name, the higher-priority location wins.
+
+### Automatic Discovery from Nested Directories (Monorepo Support)
+
+Claude Code automatically discovers Skills from nested `.claude/skills/` directories in subdirectories. This supports **monorepo setups**.
+
+**Example**: When editing `packages/frontend/`, Claude also looks for Skills in:
+- `packages/frontend/.claude/skills/`
+
+This enables package-specific skills within a monorepo structure.
 
 ### Required Structure
 
@@ -66,7 +81,7 @@ description: What the skill does and when Claude should use it
 
 **Critical**: The `description` field is the primary mechanism for Claude to discover when to use your skill. Poor descriptions = skill never activates.
 
-### Optional Fields
+### Optional Fields (Official)
 
 ```yaml
 ---
@@ -74,22 +89,59 @@ name: my-skill
 description: Detailed description with trigger keywords
 allowed-tools: Read, Grep, Glob
 model: sonnet
-context_persistence: true
-auto_invoke: true
-triggers:
-  - "create new agent"
-  - "analyze performance"
-  - "check best practices"
+context: fork
+agent: general-purpose
+user-invocable: true
+disable-model-invocation: false
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "./scripts/validate.sh"
 ---
 ```
 
 | Field | Default | Purpose |
 |-------|---------|---------|
-| `allowed-tools` | All tools | Restrict which tools Claude can access |
-| `model` | Inherits | Specific model for this skill |
-| `context_persistence` | false | Enable state management |
-| `auto_invoke` | false | Automatic activation on triggers |
-| `triggers` | None | Explicit trigger phrases |
+| `allowed-tools` | All tools | Restrict which tools Claude can access (comma-separated or YAML list) |
+| `model` | Inherits | Specific model for this skill (e.g., `claude-sonnet-4-20250514`) |
+| `context` | (none) | Set to `fork` to run skill in isolated sub-agent context |
+| `agent` | general-purpose | Agent type when `context: fork` is set (`Explore`, `Plan`, `general-purpose`, or custom) |
+| `user-invocable` | true | Controls whether skill appears in slash command menu |
+| `disable-model-invocation` | false | Blocks programmatic invocation via `Skill` tool |
+| `hooks` | (none) | Define lifecycle hooks scoped to this skill (`PreToolUse`, `PostToolUse`, `Stop`) |
+
+### String Substitutions
+
+Available variables for dynamic content in skill instructions:
+
+| Variable | Description |
+|----------|-------------|
+| `$ARGUMENTS` | All arguments passed when invoking the skill. If not present, arguments are appended as `ARGUMENTS: <value>` |
+| `${CLAUDE_SESSION_ID}` | Current session ID for logging, session-specific files, or correlating output |
+
+**Example**:
+```yaml
+---
+name: session-logger
+description: Log activity for this session
+---
+
+Log the following to logs/${CLAUDE_SESSION_ID}.log:
+
+$ARGUMENTS
+```
+
+### Deprecated/Unofficial Fields
+
+> ⚠️ **Warning**: The following fields appear in some documentation but are **not in the official Claude Code docs**. Use with caution as they may not be officially supported.
+
+| Field | Status | Notes |
+|-------|--------|-------|
+| `context_persistence` | Unofficial | May work but not documented officially |
+| `auto_invoke` | Unofficial | Skills are model-invoked by default based on description |
+| `triggers` | Unofficial | Use description keywords instead for discovery |
 
 ## Model Selection for Skills
 
@@ -227,6 +279,125 @@ Example:
 description: Analyze PostgreSQL database schemas and query performance. Identifies missing indexes, N+1 queries, and optimization opportunities. Use PROACTIVELY when working with database performance, slow queries, or schema design.
 ```
 
+## Visibility Control
+
+Control how skills can be invoked using `user-invocable` and `disable-model-invocation`:
+
+| Setting | Slash Menu | `Skill` Tool | Auto-Discovery | Use Case |
+|---------|-----------|--------------|-----------------|----------|
+| `user-invocable: true` (default) | Visible | Allowed | Yes | Skills users can invoke directly |
+| `user-invocable: false` | Hidden | Allowed | Yes | Skills Claude uses programmatically but users don't invoke manually |
+| `disable-model-invocation: true` | Visible | Blocked | Yes | Skills users invoke but Claude doesn't invoke programmatically |
+
+### Example: Model-Only Skill (Hidden from Users)
+
+```yaml
+---
+name: internal-review-standards
+description: Apply internal code review standards when reviewing pull requests
+user-invocable: false
+---
+
+Apply these internal review standards...
+```
+
+### Example: User-Only Skill (Not Auto-Invoked)
+
+```yaml
+---
+name: dangerous-cleanup
+description: Aggressive cleanup of temp files and caches
+disable-model-invocation: true
+---
+
+⚠️ This skill performs destructive operations...
+```
+
+## Run Skills in Forked Context
+
+Use `context: fork` to run a skill in an isolated sub-agent context with its own conversation history:
+
+```yaml
+---
+name: code-analysis
+description: Analyze code quality and generate detailed reports
+context: fork
+agent: general-purpose
+---
+
+Perform comprehensive code analysis...
+```
+
+**Key Points**:
+- The `agent` field specifies which agent type to use (defaults to `general-purpose`)
+- Built-in agents: `Explore`, `Plan`, `general-purpose`
+- Can also reference custom agents from `.claude/agents/`
+- Forked context preserves main conversation context
+
+## Skills and Subagents
+
+### Give Subagents Access to Skills
+
+Custom subagents **don't automatically inherit skills**. You must explicitly list them in the subagent's `skills` field:
+
+```yaml
+# .claude/agents/code-reviewer.md
+---
+name: code-reviewer
+description: Expert code reviewer
+skills: code-analysis, security-check
+tools: Read, Grep, Glob, Bash
+model: inherit
+---
+
+You are a senior code reviewer using the code-analysis and security-check skills.
+```
+
+**Important Notes**:
+- The full skill content is **injected into the subagent's context** at startup
+- Subagents do NOT inherit skills from the parent conversation
+- **Built-in agents** (`Explore`, `Plan`, `general-purpose`) **don't have access to your Skills** — only custom subagents with explicit `skills` field
+
+### Run a Skill in a Subagent Context
+
+Use `context: fork` and `agent` to run a skill in a forked subagent:
+
+```yaml
+---
+name: code-analysis
+description: Analyze code quality
+context: fork
+agent: code-reviewer
+---
+```
+
+## Define Hooks for Skills
+
+Skills can define hooks scoped to their lifecycle:
+
+```yaml
+---
+name: secure-operations
+description: Perform operations with additional security checks
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "./scripts/security-check.sh $TOOL_INPUT"
+          once: true
+---
+```
+
+**Supported Events**:
+- `PreToolUse` - Before tool execution
+- `PostToolUse` - After tool completes
+- `Stop` - When skill finishes
+
+**Options**:
+- `once: true` - Run the hook only once per session; automatically removed after first successful execution
+- Hooks defined in skills are scoped to that skill's execution and automatically cleaned up when the skill finishes
+
 ## Progressive Disclosure Pattern
 
 Claude loads content efficiently by reading supplementary files **only when needed**.
@@ -325,13 +496,8 @@ When invoked:
 ```yaml
 ---
 name: performance-monitor
-description: Track application performance metrics over time. Detects regressions and monitors optimization history. Use PROACTIVELY when deploying changes or investigating performance issues.
-context_persistence: true
-auto_invoke: true
-triggers:
-  - "check performance"
-  - "deploy to production"
-  - "performance regression"
+description: Track application performance metrics over time. Detects regressions and monitors optimization history. Use PROACTIVELY when deploying changes, checking performance, or investigating performance regressions.
+allowed-tools: Read, Bash, Grep, Glob
 ---
 
 # Performance Monitoring Skill
@@ -359,13 +525,8 @@ For baseline capture process, see [baseline-process.md](baseline-process.md).
 ```yaml
 ---
 name: doc-sync
-description: Keep documentation synchronized with code changes. Automatically updates API docs, README files, and changelog. Use when committing code changes or before releases.
+description: Keep documentation synchronized with code changes. Automatically updates API docs, README files, and changelog. Use when committing code changes, before releases, or when updating docs.
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
-auto_invoke: true
-triggers:
-  - "commit"
-  - "before release"
-  - "update docs"
 ---
 
 # Documentation Sync Skill
@@ -395,7 +556,6 @@ See [api-doc-patterns.md](patterns/api-docs.md) for API documentation standards.
 name: data-processor
 description: Process large datasets using Python scripts. Handles CSV analysis, data transformation, and report generation. Use for data analysis tasks requiring computation.
 allowed-tools: Read, Write, Bash
-context_persistence: true
 ---
 
 # Data Processing Skill
@@ -498,20 +658,75 @@ allowed-tools: Read, Write, Grep
 
 ## Troubleshooting
 
-### Skill Not Activating?
-- ✓ Validate description specificity and trigger terms
-- ✓ Verify YAML frontmatter syntax (opening/closing `---`, no tabs)
-- ✓ Check file location: `~/.claude/skills/name/SKILL.md` or `.claude/skills/name/SKILL.md`
-- ✓ Run `claude --debug` for loading errors
+### Skill Not Triggering?
 
-### Skill Malfunctioning?
-- ✓ Confirm required dependencies are installed
+The `description` field is critical. Claude reads descriptions to find relevant skills. Include:
+1. **What does this skill do?** - List specific capabilities
+2. **When should Claude use it?** - Include trigger terms users would mention
+
+**Bad description** (too vague):
+```yaml
+description: Helps with documents
+```
+
+**Good description** (specific):
+```yaml
+description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+```
+
+### Skill Doesn't Load?
+
+- ✓ **Check file path**: Must be exact: `SKILL.md` (case-sensitive)
+- ✓ **Check YAML syntax**: Frontmatter must start with `---` on line 1 (no blank lines before), end with `---`, use spaces (not tabs)
+- ✓ **Run debug mode**: `claude --debug`
+- ✓ **Check file location**: `~/.claude/skills/name/SKILL.md` or `.claude/skills/name/SKILL.md`
+
+### Skill Has Errors?
+
+- ✓ Confirm required dependencies/packages are installed
 - ✓ Verify script permissions: `chmod +x scripts/*.py`
-- ✓ Use Unix-style forward slashes in paths
+- ✓ Use forward slashes in paths: `scripts/helper.py` not `scripts\helper.py`
 
 ### Multiple Skills Conflicting?
-- ✓ Use distinct trigger terminology in descriptions
-- ✓ Differentiate by specific use cases, not generic functionality
+
+Make descriptions distinct with specific trigger terms:
+- ✓ "sales data in Excel files and CRM exports" (vs generic "data analysis")
+- ✓ "log files and system metrics" (vs generic "data analysis")
+
+### Plugin Skills Not Loading?
+
+1. **Clear plugin cache**:
+   ```bash
+   rm -rf ~/.claude/plugins/cache
+   ```
+
+2. **Verify plugin structure**:
+   ```
+   my-plugin/
+   ├── .claude-plugin/
+   │   └── plugin.json        # Only plugin.json goes here
+   └── skills/                 # Skills at plugin root, NOT inside .claude-plugin
+       └── my-skill/
+           └── SKILL.md
+   ```
+
+3. **Restart Claude Code** after installing plugins (skills require restart to load)
+
+4. **Test with debug flag**:
+   ```bash
+   claude --plugin-dir ./my-plugin --debug
+   ```
+
+## When to Use Skills vs Other Options
+
+| Use This | When You Want To… | When It Runs |
+|----------|-------------------|--------------|
+| **Skills** | Give Claude specialized knowledge | Claude chooses when relevant |
+| **Slash commands** | Create reusable prompts | You type `/command` |
+| **CLAUDE.md** | Set project-wide instructions | Loaded into every conversation |
+| **Subagents** | Delegate tasks in separate context | Claude delegates or you invoke |
+| **Hooks** | Run scripts on events | Fires on specific tool events |
+| **MCP servers** | Connect to external tools/data | Claude calls as needed |
 
 ## Platform Support
 
@@ -538,7 +753,7 @@ description: Specific description with clear trigger keywords
 Instructions for what this skill does.
 ```
 
-**Full-featured skill**:
+**Full-featured skill** (with official fields):
 ```
 .claude/skills/advanced-skill/
 ├── SKILL.md
@@ -556,15 +771,36 @@ Instructions for what this skill does.
 name: advanced-skill
 description: Comprehensive description with PROACTIVE keywords and specific use cases
 allowed-tools: Read, Write, Bash
-context_persistence: true
-auto_invoke: true
-triggers:
-  - "keyword 1"
-  - "keyword 2"
+model: sonnet
+context: fork
+agent: general-purpose
+user-invocable: true
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "./scripts/validate.sh"
 ---
 
 # Main instructions
 
+Session ID: ${CLAUDE_SESSION_ID}
+Arguments: $ARGUMENTS
+
 See [reference.md](reference.md) for details.
 See [examples.md](examples.md) for usage.
 ```
+
+**All official YAML fields**:
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Unique identifier (lowercase, numbers, hyphens; max 64 chars) |
+| `description` | Yes | When to use skill (max 1024 chars) |
+| `allowed-tools` | No | Tools Claude can use (comma-separated or YAML list) |
+| `model` | No | Model to use (e.g., `claude-sonnet-4-20250514`) |
+| `context` | No | Set to `fork` for isolated sub-agent context |
+| `agent` | No | Agent type when `context: fork` is set |
+| `hooks` | No | Lifecycle hooks (`PreToolUse`, `PostToolUse`, `Stop`) |
+| `user-invocable` | No | Show in slash command menu (default: true) |
+| `disable-model-invocation` | No | Block `Skill` tool invocation |

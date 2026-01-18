@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "2.0.0",
-  "lastUpdated": "2026-01-10T00:00:00Z",
+  "lastUpdated": "2026-01-17T00:00:00Z",
   "description": "Hierarchical registry of all Claude/Anthropic documentation sources",
 
   "domains": {
@@ -96,9 +96,74 @@
           "status": "not_cached"
         },
         "skills.md": {
-          "description": "Skills documentation",
+          "description": "Skills documentation - YAML fields, visibility control, subagents, hooks",
           "category": "skills",
-          "localCache": ".cache/docs/code-claude-com/skills.md",
+          "localCache": "docs/patterns/skill-creation.md",
+          "lastFetched": "2026-01-17T00:00:00Z",
+          "status": "cached",
+          "priority": 1,
+          "checkFrequency": "weekly"
+        },
+        "plugins.md": {
+          "description": "Plugins documentation - skill bundling, plugin structure",
+          "category": "plugins",
+          "localCache": ".cache/docs/code-claude-com/plugins.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "plugins-reference.md": {
+          "description": "Plugins API reference - advanced plugin development",
+          "category": "plugins",
+          "localCache": ".cache/docs/code-claude-com/plugins-reference.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "cli-reference.md": {
+          "description": "CLI reference - all command-line flags and options",
+          "category": "cli",
+          "localCache": ".cache/docs/code-claude-com/cli-reference.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "interactive-mode.md": {
+          "description": "Interactive mode features",
+          "category": "cli",
+          "localCache": ".cache/docs/code-claude-com/interactive-mode.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "headless.md": {
+          "description": "Headless mode for automation",
+          "category": "automation",
+          "localCache": ".cache/docs/code-claude-com/headless.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "output-styles.md": {
+          "description": "Output formatting and styles",
+          "category": "configuration",
+          "localCache": ".cache/docs/code-claude-com/output-styles.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "github-actions.md": {
+          "description": "GitHub Actions CI/CD integration",
+          "category": "cicd",
+          "localCache": ".cache/docs/code-claude-com/github-actions.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "gitlab-cicd.md": {
+          "description": "GitLab CI/CD integration",
+          "category": "cicd",
+          "localCache": ".cache/docs/code-claude-com/gitlab-cicd.md",
+          "lastFetched": null,
+          "status": "not_cached"
+        },
+        "troubleshooting.md": {
+          "description": "Troubleshooting guide for common issues",
+          "category": "support",
+          "localCache": ".cache/docs/code-claude-com/troubleshooting.md",
           "lastFetched": null,
           "status": "not_cached"
         },
