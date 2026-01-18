@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/zot24/skills/compare/agent-browser-v2.0.0...agent-browser-v2.1.0) (2026-01-18)
+
+
+### Features
+
+* **clawdbot:** add MCP server support via MCPorter ([536d015](https://github.com/zot24/skills/commit/536d0159e8953bdcbd4348a932d39b4b7d8d1e67))
+
 ## [2.0.0](https://github.com/zot24/skills/compare/agent-browser-v1.1.0...agent-browser-v2.0.0) (2026-01-18)
 
 
