@@ -15,6 +15,7 @@ You are an expert on Clawdbot, the AI assistant framework connecting LLMs to mes
 - Gateway architecture with WebSocket protocol
 - Workspace management with memory and session persistence
 - Skills system via AgentSkills-compatible format
+- MCP server support via MCPorter integration
 - Runs on macOS, iOS, Android, Windows (WSL2), Linux
 
 ## Quick Start
@@ -54,7 +55,7 @@ Reference detailed docs for specific topics:
 - **[Gateway](docs/gateway.md)** - Protocol, config, auth, health, troubleshooting
 - **[Channels](docs/channels.md)** - WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Teams
 - **[Providers](docs/providers.md)** - Anthropic, OpenAI, Moonshot, MiniMax, OpenRouter
-- **[Tools & Skills](docs/tools.md)** - Exec, browser, slash commands, ClawdHub
+- **[Tools & Skills](docs/tools.md)** - Exec, browser, slash commands, MCP servers, ClawdHub
 - **[Automation](docs/automation.md)** - Webhooks, Gmail, cron jobs, polling
 - **[Web Interfaces](docs/web.md)** - Control panel, dashboard, webchat, TUI
 - **[Nodes & Media](docs/nodes.md)** - Camera, images, audio, location, voice

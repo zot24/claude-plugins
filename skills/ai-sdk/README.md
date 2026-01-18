@@ -64,7 +64,7 @@ const { text } = await generateText({
 Documentation is synced from upstream sources. Run sync manually:
 
 ```bash
-.github/scripts/sync-skill.sh skills/ai-sdk
+.github/workflows/scripts/sync-skill.sh skills/ai-sdk
 ```
 
 Or wait for the bi-weekly CI sync.

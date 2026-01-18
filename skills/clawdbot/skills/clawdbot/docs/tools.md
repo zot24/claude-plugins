@@ -185,6 +185,68 @@ module.exports = {
 
 ---
 
+## MCP Servers (via MCPorter)
+
+Connect to Model Context Protocol (MCP) servers using [MCPorter](https://github.com/steipete/mcporter).
+
+### Configuration
+
+Create `~/.clawdbot/mcporter.json`:
+
+```json
+{
+  "servers": {
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/linear-mcp-server"],
+      "env": {
+        "LINEAR_API_KEY": "${LINEAR_API_KEY}"
+      }
+    },
+    "ms365": {
+      "command": "npx",
+      "args": ["-y", "@softeria/ms-365-mcp-server"],
+      "env": {
+        "MS365_MCP_CLIENT_ID": "${MS365_MCP_CLIENT_ID}",
+        "MS365_MCP_TENANT_ID": "${MS365_MCP_TENANT_ID}"
+      }
+    }
+  }
+}
+```
+
+### Auto-Discovery
+
+MCPorter auto-discovers MCP servers configured in:
+- Claude Code/Desktop
+- Cursor
+- Codex
+- Local overrides
+
+### CLI Commands
+
+```bash
+# List available servers
+npx mcporter list
+
+# List tools from a server
+npx mcporter list <server-name>
+
+# Call a tool
+npx mcporter call <server>.<tool> [args]
+
+# Example: List Linear issues
+npx mcporter call linear.list_issues limit=5
+```
+
+### Features
+
+- **Zero-config** - Works with existing MCP configurations
+- **OAuth support** - Automatic browser auth flow with token persistence
+- **Env variables** - Use `${VAR}` syntax for secrets
+
+---
+
 ## Upstream Sources
 
 - https://docs.clawd.bot/tools/skills
@@ -193,3 +255,4 @@ module.exports = {
 - https://docs.clawd.bot/tools/slash-commands
 - https://docs.clawd.bot/tools/subagents
 - https://docs.clawd.bot/tools/clawdhub
+- https://github.com/steipete/mcporter

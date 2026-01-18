@@ -48,7 +48,7 @@ jobs:
           FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
           DRY_RUN_FLAG: ${{ inputs.dry_run == true && '--dry-run' || '' }}
         run: |
-          chmod +x .github/scripts/sync-skill.sh
+          chmod +x .github/workflows/scripts/sync-skill.sh
 
           SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills")
           CHANGED_SKILLS=""
@@ -61,7 +61,7 @@ jobs:
 
             # Run sync and capture exit code (don't fail workflow on sync failure)
             set +e
-            OUTPUT=$(.github/scripts/sync-skill.sh "skills/$SKILL" $FORCE_FLAG $DRY_RUN_FLAG 2>&1)
+            OUTPUT=$(.github/workflows/scripts/sync-skill.sh "skills/$SKILL" $FORCE_FLAG $DRY_RUN_FLAG 2>&1)
             EXIT_CODE=$?
             set -e
 

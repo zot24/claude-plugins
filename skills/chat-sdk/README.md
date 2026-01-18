@@ -65,7 +65,7 @@ pnpm dev
 Documentation is synced from upstream sources. Run sync manually:
 
 ```bash
-.github/scripts/sync-skill.sh skills/chat-sdk
+.github/workflows/scripts/sync-skill.sh skills/chat-sdk
 ```
 
 Or wait for the bi-weekly CI sync.

@@ -195,13 +195,13 @@ Each skill syncs documentation from upstream sources.
 
 ```bash
 # Sync a specific skill
-.github/scripts/sync-skill.sh skills/<skill-name>
+.github/workflows/scripts/sync-skill.sh skills/<skill-name>
 
 # Force refresh (ignore cache)
-.github/scripts/sync-skill.sh skills/<skill-name> --force
+.github/workflows/scripts/sync-skill.sh skills/<skill-name> --force
 
 # Dry run (check without modifying)
-.github/scripts/sync-skill.sh skills/<skill-name> --dry-run
+.github/workflows/scripts/sync-skill.sh skills/<skill-name> --dry-run
 ```
 
 ### Skill Sources

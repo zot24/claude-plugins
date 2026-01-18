@@ -75,5 +75,5 @@ agent-browser close
 Documentation syncs from upstream automatically. Manual sync:
 
 ```bash
-.github/scripts/sync-skill.sh skills/agent-browser
+.github/workflows/scripts/sync-skill.sh skills/agent-browser
 ```
