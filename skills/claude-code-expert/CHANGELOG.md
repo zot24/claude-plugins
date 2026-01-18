@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/zot24/skills/compare/claude-code-expert-v2.0.2...claude-code-expert-v2.0.3) (2026-01-18)
+
+
+### Documentation
+
+* sync documentation from upstream ([#19](https://github.com/zot24/skills/issues/19)) ([cb6f92f](https://github.com/zot24/skills/commit/cb6f92f409c89bb9e99341fa40b692e5cd0ba089))
+
 ## [2.0.2](https://github.com/zot24/skills/compare/claude-code-expert-v2.0.1...claude-code-expert-v2.0.2) (2026-01-18)
 
 
