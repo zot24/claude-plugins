@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/zot24/skills/compare/clawdbot-v3.0.0...clawdbot-v3.1.0) (2026-01-18)
+
+
+### Features
+
+* **clawdbot:** add MCP server support via MCPorter ([536d015](https://github.com/zot24/skills/commit/536d0159e8953bdcbd4348a932d39b4b7d8d1e67))
+
 ## [3.0.0](https://github.com/zot24/skills/compare/clawdbot-v2.1.0...clawdbot-v3.0.0) (2026-01-18)
 
 
