@@ -1,0 +1,38 @@
+{
+  "name": "beeper",
+  "version": "1.0.0",
+  "description": "Beeper Desktop API skill for unified messaging",
+  "sources": [
+    {
+      "url": "https://developers.beeper.com/desktop-api",
+      "target": "skills/beeper/docs/getting-started.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://developers.beeper.com/desktop-api/auth",
+      "target": "skills/beeper/docs/authentication.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://developers.beeper.com/desktop-api-reference/",
+      "target": "skills/beeper/docs/api-reference.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://developers.beeper.com/desktop-api/mcp",
+      "target": "skills/beeper/docs/mcp.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    },
+    {
+      "url": "https://developers.beeper.com/desktop-api-reference/typescript/",
+      "target": "skills/beeper/docs/typescript-sdk.md",
+      "type": "extract-content",
+      "freshness_days": 14
+    }
+  ],
+  "cache_dir": ".cache"
+}

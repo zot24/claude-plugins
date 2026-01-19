@@ -50,7 +50,7 @@ jobs:
         run: |
           chmod +x .github/workflows/scripts/sync-skill.sh
 
-          SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills")
+          SKILLS=("umbrel-app" "claude-code-expert" "clawdbot" "agent-browser" "chat-sdk" "ai-sdk" "agent-skills" "beeper")
           CHANGED_SKILLS=""
           FAILED_SKILLS=""
           ALL_CHANGES=""

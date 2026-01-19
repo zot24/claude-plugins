@@ -53,6 +53,12 @@
       "source": "./skills/safe-delete",
       "description": "Prevents catastrophic file deletion by transforming rm commands to trash and blocking dangerous patterns like rm -rf /",
       "version": "1.0.0"
+    },
+    {
+      "name": "beeper",
+      "source": "./skills/beeper",
+      "description": "Expert on Beeper Desktop API for unified messaging across 12+ platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage)",
+      "version": "1.0.0"
     }
   ]
 }

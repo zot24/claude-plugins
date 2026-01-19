@@ -1,0 +1,8 @@
+{
+  "name": "beeper",
+  "displayName": "Beeper Desktop API",
+  "version": "1.0.0",
+  "description": "Expert on Beeper Desktop API for unified messaging across 12+ platforms (WhatsApp, Telegram, Discord, Slack, Signal, iMessage). Use when building messaging integrations, automating chat workflows, or working with Beeper's local REST API. Triggers on mentions of Beeper, desktop-api, unified messaging, chat API.",
+  "skillFile": "skills/beeper/SKILL.md",
+  "commandFile": "commands/beeper.md"
+}
